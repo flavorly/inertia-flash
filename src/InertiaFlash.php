@@ -45,6 +45,7 @@ class InertiaFlash
      */
     public function share(string $key, $value, bool $append = false): static
     {
+
         if($value instanceof Closure) {
             $value = new SerializableClosure($value);
         }
@@ -59,6 +60,52 @@ class InertiaFlash
         $this->syncWithSessionAndInertia();
 
         return $this;
+    }
+
+    /**
+     * Alias to share function, but to append
+     *
+     * @param  string  $key
+     * @param $value
+     * @return $this
+     * @throws PhpVersionNotSupportedException
+     */
+    public function append(string $key, $value): static
+    {
+        return $this->share($key, $value, true);
+    }
+
+    /**
+     * Share if condition is met
+     *
+     * @param  bool  $condition
+     * @param  string  $key
+     * @param $value
+     * @param  bool  $append
+     * @return $this
+     * @throws PhpVersionNotSupportedException
+     */
+    public function shareIf(bool $condition,string $key, $value, bool $append = false): static
+    {
+        if($condition) {
+            return $this->share($key, $value, $append);
+        }
+        return $this;
+    }
+
+    /**
+     * Share if condition is met
+     *
+     * @param  bool  $condition
+     * @param  string  $key
+     * @param $value
+     * @param  bool  $append
+     * @return $this
+     * @throws PhpVersionNotSupportedException
+     */
+    public function shareUnless(bool $condition, string $key, $value, bool $append = false): static
+    {
+        return $this->shareIf(!$condition, $key, $value, $append);
     }
 
     /**
@@ -128,6 +175,10 @@ class InertiaFlash
      */
     protected function syncToInertia(): void
     {
+        $persistentKeys = config('inertia-flash.persistent-keys', []);
+        if(!empty($persistentKeys)) {
+            collect($persistentKeys)->each(fn($value, $key) => inertia()->share($key, $value));
+        }
         $this->container->each(fn($value, $key) => inertia()->share($key, $value));
     }
 

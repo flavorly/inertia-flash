@@ -7,7 +7,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/igerslike/inertia-flash/Check%20&%20fix%20styling?label=code%20style)](https://github.com/igerslike/inertia-flash/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/igerslike/inertia-flash.svg?style=flat-square)](https://packagist.org/packages/igerslike/inertia-flash)
 
-A Quick way to flash & share variables to [InertiaJS](https://inertiajs.com/) that persist on session.
+A Quick way to flash & share variables to [InertiaJS](https://inertiajs.com/) that persist on session. Really useful for redirects & returns!
 
 ## Installation
 
@@ -45,7 +45,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may configure the keys that should be persisted on the session,
-    | even if they are empty they will be mapped to their primitives configured here.
+    | even if they are empty they will be mapped to their values configured here.
     |
     */
 
@@ -91,6 +91,13 @@ return back()->inertia('foo', fn() => 'bar');
 inertia_flash()->share('fruits', 'bananas');
 inertia_flash()->share('fruits', 'oranges');
 
+// Conditional Sharing
+inertia_flash()->shareIf($foo === true, 'foo', 'bar');
+inertia_flash()->shareUnless($foo === false, 'foo', 'bar');
+
+// Appending
+// You can also use append on regular share method as the third parameter
+inertia_flash()->append('foo', 'bar');
 ```
 
 ## Testing
