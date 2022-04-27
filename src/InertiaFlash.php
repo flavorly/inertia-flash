@@ -24,14 +24,9 @@ class InertiaFlash
     {
         // On build, we will pull from session.
         $this->container = collect(session()->get(config('inertia-flash.session-key','inertia-container'), []));
-        // Unpack the variables in case if its serialized.
-        $this->resolveContainerValues();
-        // then for each item that is still on the container if any, we will inertia share them :)
-        $this->syncToInertia();
         // We need to Flush also
-        session()->forget(config('inertia-flash.session-key','inertia-container'));
+        $this->flushSession();
     }
-
 
     /**
      *
@@ -45,10 +40,8 @@ class InertiaFlash
      */
     public function share(string $key, $value, bool $append = false): static
     {
-
-        if($value instanceof Closure) {
-            $value = new SerializableClosure($value);
-        }
+        // Ensure we serialize the value for sharing
+        $value = $this->serializeValue($value);
 
         if($append) {
             $current = array_merge_recursive($this->container->get($key, []), [$value]);
@@ -57,7 +50,7 @@ class InertiaFlash
             $this->container->put($key, $value);
         }
 
-        $this->syncWithSessionAndInertia();
+        $this->shareToSession();
 
         return $this;
     }
@@ -112,28 +105,110 @@ class InertiaFlash
      * Forget the value from the container & session
      *
      * @param ...$keys
-     * @return $this
+     * @return static
      */
     public function forget(...$keys): static
     {
         $this->container->forget(...$keys);
         inertia()->forget(...$keys);
-        $this->syncWithSessionAndInertia();
+        $this->shareToSession();
         return $this;
     }
 
     /**
      * Flush the items from the session
+     * And also from inertia
      *
-     * @return $this
+     * @return static
      */
     public function flush(): static
     {
         $keys = $this->container->keys();
         $this->container = collect([]);
         inertia()->forget($keys->toArray());
+        $this->flushSession();
+        return $this;
+    }
+
+    /**
+     * Flush the session only
+     *
+     * @return $this
+     */
+    public function flushSession(): static
+    {
         session()->forget(config('inertia-flash.session-key','inertia-container'));
         return $this;
+    }
+
+    /**
+     * Syncs to Inertia Share
+     *
+     * @param  bool  $flushSession
+     * @return InertiaFlash
+     */
+    public function shareToInertia(bool $flushSession = true): static
+    {
+        // Unserialize/Unpack any pending Serialized Closures
+        $this->unserializeContainerValues();
+
+        // Persist the keys for emptiness
+        $persistentKeys = config('inertia-flash.persistent-keys', []);
+        if(!empty($persistentKeys)) {
+            collect($persistentKeys)->each(fn($value, $key) => inertia()->share($key, $value));
+        }
+
+        // Share with Inertia
+        $this->container->each(fn($value, $key) => inertia()->share($key, $value));
+
+        // Flush on sharing
+        if($flushSession && config('inertia-flash.flush', true)) {
+            $this->flushSession();
+        }
+        return $this;
+    }
+
+    /**
+     * Syncs to Inertia Share & Also for the Session
+     *
+     * @return $this
+     */
+    protected function shareToSession(): static
+    {
+        // Need to pack/serialize to session, because session does not support closures
+        // But it does take Laravel Serializable Closure
+        $this->serializeContainerValues();
+
+        // Then we are ready to put it in the session
+        session()->put(config('inertia-flash.session-key','inertia-container'), $this->container->toArray());
+
+        return $this;
+    }
+
+    /**
+     * Attempt to Serialize closures
+     * @throws PhpVersionNotSupportedException
+     */
+    protected function serializeValue($value)
+    {
+        if($value instanceof Closure) {
+            return new SerializableClosure($value);
+        }
+
+        if(is_array($value)) {
+            foreach($value as $key => $item) {
+
+                // Other edge cases can be added here
+                if(!$item instanceof Closure) {
+                    continue;
+                }
+
+                $value[$key] = $this->serializeValue($item);
+
+            }
+        }
+
+        return $value;
     }
 
     /**
@@ -143,7 +218,7 @@ class InertiaFlash
      * @return mixed
      * @throws PhpVersionNotSupportedException
      */
-    protected function resolveValue($value): mixed
+    protected function unserializeValue($value): mixed
     {
         if($value instanceof SerializableClosure) {
             return $value->getClosure();
@@ -151,7 +226,7 @@ class InertiaFlash
 
         if(is_array($value)) {
             foreach($value as $key => $item) {
-                $value[$key] = $this->resolveValue($item);
+                $value[$key] = $this->unserializeValue($item);
             }
         }
 
@@ -161,36 +236,22 @@ class InertiaFlash
     /**
      * Transforms the values, and attempts to resolve pending Serialized Closures
      *
-     * @return void
+     * @return static
      */
-    protected function resolveContainerValues(): void
+    protected function unserializeContainerValues(): static
     {
-        $this->container->transform(fn($value) => $this->resolveValue($value));
+        $this->container->transform(fn($value) => $this->unserializeValue($value));
+        return $this;
     }
 
     /**
-     * Syncs to Inertia Share
+     * Transforms the values, and attempts to resolve pending Serialized Closures
      *
-     * @return void
+     * @return static
      */
-    protected function syncToInertia(): void
+    protected function serializeContainerValues(): static
     {
-        $persistentKeys = config('inertia-flash.persistent-keys', []);
-        if(!empty($persistentKeys)) {
-            collect($persistentKeys)->each(fn($value, $key) => inertia()->share($key, $value));
-        }
-        $this->container->each(fn($value, $key) => inertia()->share($key, $value));
-    }
-
-    /**
-     * Syncs to Inertia Share & Also for the Session
-     *
-     * @return $this
-     */
-    protected function syncWithSessionAndInertia(): static
-    {
-        $this->syncToInertia();
-        session()->put(config('inertia-flash.session-key','inertia-container'), $this->container->toArray());
+        $this->container->transform(fn($value) => $this->serializeValue($value));
         return $this;
     }
 }

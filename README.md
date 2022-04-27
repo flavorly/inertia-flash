@@ -52,6 +52,17 @@ return [
     'persistent-keys' => [
         // foo, bar, baz
     ],
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Middleware
+    |--------------------------------------------------------------------------
+    |
+    | Middleware to register the inertia share request
+    | Default: 'web'
+    |
+    */
+    'middleware' => 'web',
 ];
 ```
 
@@ -71,6 +82,11 @@ $flash->share('foo', 'bar');
 // Or using the helper
 inertia_flash()->share('foo', 'bar');
 
+// With a closure that will be serialized
+inertia_flash()->share('foo', fn() => 'bar');
+
+// With a nested closure
+inertia_flash()->share('foo', ['bar' => 'foo', 'baz' => fn() => 'bar']);
 
 // On Controllers return back()
 return back()->inertia('foo', 'bar');

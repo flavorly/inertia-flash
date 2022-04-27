@@ -2,6 +2,8 @@
 
 namespace Igerslike\InertiaFlash;
 
+use Igerslike\InertiaFlash\Http\Middleware\InertiaFlashMiddleware;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
@@ -15,6 +17,13 @@ class InertiaFlashServiceProvider extends PackageServiceProvider
         $package
             ->name('inertia-flash')
             ->hasConfigFile();
+    }
+
+    public function bootingPackage()
+    {
+        $kernel = $this->app->make(Kernel::class);
+        $kernel->appendMiddlewareToGroup(config('inertia-flash.middleware','web'), InertiaFlashMiddleware::class);
+        $kernel->appendToMiddlewarePriority(InertiaFlashMiddleware::class);
     }
 
     public function registeringPackage()

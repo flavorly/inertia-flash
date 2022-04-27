@@ -2,7 +2,7 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Session Key
+    | Session Configuration
     |--------------------------------------------------------------------------
     |
     | Key to be used on session, when we flash the items. This should be a
@@ -11,6 +11,7 @@ return [
     */
 
     'session-key' => 'inertia-container',
+    'flush' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -25,4 +26,15 @@ return [
     'persistent-keys' => [
         // foo, bar, baz
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Middleware
+    |--------------------------------------------------------------------------
+    |
+    | Middleware to register the inertia share request
+    | Default: 'web'
+    |
+    */
+    'middleware' => 'web',
 ];
