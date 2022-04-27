@@ -25,14 +25,70 @@ This is the contents of the published config file:
 
 ```php
 return [
+  /*
+    |--------------------------------------------------------------------------
+    | Session Key
+    |--------------------------------------------------------------------------
+    |
+    | Key to be used on session, when we flash the items. This should be a
+    | a reserved and unique key.
+    |
+    */
+
+    'session-key' => 'inertia-container',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Persistent Keys
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the keys that should be persisted on the session,
+    | even if they are empty they will be mapped to their primitives configured here.
+    |
+    */
+
+    'persistent-keys' => [
+        // foo, bar, baz
+    ],
 ];
 ```
 
 ## Usage
 
+You can use the Inertia Flash helper anywhere from your code and share your variables directly to InertiaJS.
+Keep in the mind that the values will only be kept on the next request lifecycle, they will be flushed once shared to Inertia
+You may also use closures that under-the-hood will be converted to Laravel Closure Serializer ( Previously Opis )
+
 ```php
-$inertiaFlash = new Igerslike\InertiaFlash();
-echo $inertiaFlash->echoPhrase('Hello, Igerslike!');
+use \Igerslike\InertiaFlash\InertiaFlash;
+
+// Resolve from container
+$flash = app(\Igerslike\InertiaFlash\InertiaFlash::class);
+$flash->share('foo', 'bar');
+
+// Or using the helper
+inertia_flash()->share('foo', 'bar');
+
+
+// On Controllers return back()
+return back()->inertia('foo', 'bar');
+
+// return back() + Closures
+return back()->inertia('foo', function () {
+    return 'bar';
+});
+
+// Or the way cool way
+inertia_flash()->share('foo', fn() => 'bar');
+
+// Returning + the cool way
+return back()->inertia('foo', fn() => 'bar');
+
+
+// Appending Data
+inertia_flash()->share('fruits', 'bananas');
+inertia_flash()->share('fruits', 'oranges');
+
 ```
 
 ## Testing
