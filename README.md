@@ -1,4 +1,6 @@
-# Inertia Flash
+# Inertia Flash ⚡
+
+<p align="center"><img src="./assets/cover.png"></p>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/igerslike/inertia-flash.svg?style=flat-square)](https://packagist.org/packages/igerslike/inertia-flash)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/igerslike/inertia-flash/run-tests?label=tests)](https://github.com/igerslike/inertia-flash/actions?query=workflow%3Arun-tests+branch%3Amain)
