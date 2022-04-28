@@ -42,16 +42,12 @@ class InertiaFlash
     {
         // Ensure we serialize the value for sharing
         $value = $this->serializeValue($value);
-
         if($append) {
-            $current = array_merge_recursive($this->container->get($key, []), [$value]);
-            $this->container->put($key, $current);
-        } else {
-            $this->container->put($key, $value);
+            $value = array_merge_recursive($this->container->get($key, []), [$value]);
         }
+        $this->container->put($key, $value);
 
         $this->shareToSession();
-
         return $this;
     }
 
@@ -164,6 +160,7 @@ class InertiaFlash
         // Flush on sharing
         if($flushSession && config('inertia-flash.flush', true)) {
             $this->flushSession();
+            $this->container = collect([]);
         }
         return $this;
     }
