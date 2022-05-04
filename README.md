@@ -129,7 +129,7 @@ return back()->inertia('foo', fn() => 'bar');
 
 
 // Appending Data
-inertia_flash()->('fruits', 'bananas',true);
+inertia_flash()->share('fruits', 'bananas',true);
 inertia_flash()->share('fruits', 'oranges', true);
 
 // Conditional Sharing
