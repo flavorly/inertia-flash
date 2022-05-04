@@ -37,4 +37,17 @@ return [
     |
     */
     'middleware' => 'web',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ignore URLs & Params
+    |--------------------------------------------------------------------------
+    |
+    | The URls to ignore by default, because inertia runs on web middl
+    | Default For URLS: ['broadcasting/auth']
+    |
+    */
+    'ignore_urls' => [
+        'broadcasting/auth',
+    ],
 ];
