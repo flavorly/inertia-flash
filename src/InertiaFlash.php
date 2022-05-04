@@ -5,6 +5,7 @@ namespace Igerslike\InertiaFlash;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
+use Inertia\Inertia;
 use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 use Laravel\SerializableClosure\SerializableClosure;
 use Psr\Container\ContainerExceptionInterface;
@@ -151,11 +152,11 @@ class InertiaFlash
         // Persist the keys for emptiness
         $persistentKeys = config('inertia-flash.persistent-keys', []);
         if(!empty($persistentKeys)) {
-            collect($persistentKeys)->each(fn($value, $key) => inertia()->share($key, $value));
+            collect($persistentKeys)->each(fn($value, $key) => Inertia::share($key, $value));
         }
 
         // Share with Inertia
-        $this->container->each(fn($value, $key) => inertia()->share($key, $value));
+        $this->container->each(fn($value, $key) => Inertia::share($key, $value));
 
         // Flush on sharing
         if($flushSession && config('inertia-flash.flush', true)) {
@@ -163,6 +164,23 @@ class InertiaFlash
             $this->container = collect([]);
         }
         return $this;
+    }
+
+    /**
+     * Get the params being shared for the container
+     *
+     * @param  bool  $flushSession
+     * @return array
+     */
+    public function getShared(bool $flushSession = true): array
+    {
+        $container = clone $this->container;
+        // Flush on sharing
+        if($flushSession && config('inertia-flash.flush', true)) {
+            $this->flushSession();
+            $this->container = collect([]);
+        }
+        return $container->toArray();
     }
 
     /**

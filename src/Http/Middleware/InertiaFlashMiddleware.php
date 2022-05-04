@@ -17,6 +17,10 @@ class InertiaFlashMiddleware
      */
     public function handle($request, $next)
     {
+        // Sockets and Broadcasting Exclude
+        if(str_contains($request->url(),'broadcasting/auth') || $request->has('_inertia_flash')) {
+            return $next($request);
+        }
         inertia_flash()->shareToInertia();
         return $next($request);
     }
