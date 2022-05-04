@@ -93,7 +93,7 @@ return [
 ## Usage
 
 You can use the Inertia Flash helper anywhere from your code and share your variables directly to InertiaJS.
-Keep in the mind that the values will only be kept on the next request lifecycle, they will be flushed once shared to Inertia
+Keep in the mind that the values will only be kept on the current or next request lifecycle, they will be flushed once shared to Inertia
 You may also use closures that under-the-hood will be converted to Laravel Closure Serializer ( Previously Opis )
 
 ```php
@@ -143,6 +143,22 @@ inertia_flash()->append('foo', 'bar');
 // Only available if driver is cache, otherwise session will always use the current logged user
 inertia_flash()->forUser($user)->append('foo', 'bar');
 ```
+
+# Why Inertia Flash?
+
+This package is intended to be used with the [InertiaJS](https://inertiajs.com/) framework. 
+Inertia provides a nice way to share variables, but sometimes you might want to share data from somewhere else in your code.
+
+Few use cases :
+- Sharing data before a redirect ( Ex: back()->with('foo','bar') can be replicated with back()->inertia('foo','bar') )
+- Sharing data from a controller to a view without using Inertia::share()
+- Sharing data from a service directly
+- Sharing data from any point of your code before serving a request/page
+- Sharing data from a command/job to a specific user
+- Avoiding Inertia Middleware pollution with sharing session variables back and forth.
+- etc..
+
+If you are looking for real-time sharing this package might not be your best choice, and would recommend using [Laravel Echo](https://github.com/laravel/echo) paired together with Pusher or [Soketi](https://docs.soketi.app/).
 
 ## Testing
 
