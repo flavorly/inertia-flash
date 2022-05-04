@@ -3,36 +3,41 @@
 namespace Igerslike\InertiaFlash;
 
 use Closure;
+use Igerslike\InertiaFlash\Drivers\AbstractDriver;
+use Igerslike\InertiaFlash\Drivers\CacheDriver;
+use Igerslike\InertiaFlash\Drivers\SessionDriver;
+use Igerslike\InertiaFlash\Exceptions\DriverNotSupportedException;
+use Igerslike\InertiaFlash\Exceptions\PrimaryKeyNotFoundException;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use Inertia\Inertia;
 use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 use Laravel\SerializableClosure\SerializableClosure;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class InertiaFlash
 {
     use Macroable;
 
     protected Collection $container;
+    protected ?AbstractDriver $driver = null;
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function __construct()
     {
-        // On build, we will pull from session.
-        $this->container = collect(session()->get(config('inertia-flash.session-key','inertia-container'), []));
+        // Boot the driver
+        $this->getDriver();
+        // On build, we will pull from driver.
+        $this->container = $this->getDriver()->get();
         // We need to Flush also
-        $this->flushSession();
+        $this->flushDriver();
     }
 
     /**
      *
-     * Shares the Value with Inertia & Also stores it in the session.
+     * Shares the Value with Inertia & Also stores it in the driver.
      *
      * @param  string  $key
      * @param $value
@@ -49,7 +54,7 @@ class InertiaFlash
         }
         $this->container->put($key, $value);
 
-        $this->shareToSession();
+        $this->shareToDriver();
         return $this;
     }
 
@@ -100,7 +105,7 @@ class InertiaFlash
     }
 
     /**
-     * Forget the value from the container & session
+     * Forget the value from the container & driver
      *
      * @param ...$keys
      * @return static
@@ -109,12 +114,12 @@ class InertiaFlash
     {
         $this->container->forget(...$keys);
         inertia()->forget(...$keys);
-        $this->shareToSession();
+        $this->shareToDriver();
         return $this;
     }
 
     /**
-     * Flush the items from the session
+     * Flush the items from the driver
      * And also from inertia
      *
      * @return static
@@ -124,28 +129,28 @@ class InertiaFlash
         $keys = $this->container->keys();
         $this->container = collect([]);
         inertia()->forget($keys->toArray());
-        $this->flushSession();
+        $this->flushDriver();
         return $this;
     }
 
     /**
-     * Flush the session only
+     * Flush the driver only
      *
      * @return $this
      */
-    public function flushSession(): static
+    public function flushDriver(): static
     {
-        session()->forget(config('inertia-flash.session-key','inertia-container'));
+        $this->getDriver()->flush();
         return $this;
     }
 
     /**
      * Syncs to Inertia Share
      *
-     * @param  bool  $flushSession
+     * @param  bool  $flush
      * @return InertiaFlash
      */
-    public function shareToInertia(bool $flushSession = true): static
+    public function shareToInertia(bool $flush = true): static
     {
         if(!$this->shouldIgnore()) {
             return $this;
@@ -164,8 +169,8 @@ class InertiaFlash
         $this->container->each(fn($value, $key) => Inertia::share($key, $value));
 
         // Flush on sharing
-        if($flushSession && config('inertia-flash.flush', true)) {
-            $this->flushSession();
+        if($flush && config('inertia-flash.flush', true)) {
+            $this->flushDriver();
             $this->container = collect([]);
         }
         return $this;
@@ -174,10 +179,10 @@ class InertiaFlash
     /**
      * Get the params being shared for the container
      *
-     * @param  bool  $flushSession
+     * @param  bool  $flush
      * @return array
      */
-    public function getShared(bool $flushSession = true): array
+    public function getShared(bool $flush = true): array
     {
         if(!$this->shouldIgnore()) {
             return [];
@@ -185,26 +190,26 @@ class InertiaFlash
 
         $container = clone $this->container;
         // Flush on sharing
-        if($flushSession && config('inertia-flash.flush', true)) {
-            $this->flushSession();
+        if($flush && config('inertia-flash.flush', true)) {
+            $this->flushDriver();
             $this->container = collect([]);
         }
         return $container->toArray();
     }
 
     /**
-     * Syncs to Inertia Share & Also for the Session
+     * Syncs to Inertia Share & Also for the driver
      *
      * @return $this
      */
-    protected function shareToSession(): static
+    protected function shareToDriver(): static
     {
-        // Need to pack/serialize to session, because session does not support closures
+        // Need to pack/serialize to driver, because driver does not support closures
         // But it does take Laravel Serializable Closure
         $this->serializeContainerValues();
 
-        // Then we are ready to put it in the session
-        session()->put(config('inertia-flash.session-key','inertia-container'), $this->container->toArray());
+        // Then we are ready to put it in the driver
+        $this->getDriver()->put($this->container);
 
         return $this;
     }
@@ -294,5 +299,48 @@ class InertiaFlash
     {
         $this->container->transform(fn($value) => $this->serializeValue($value));
         return $this;
+    }
+
+    /**
+     * Binds the inertia flash to share to a specific user.
+     *
+     * @param  Authenticatable  $authenticatable
+     * @return $this
+     * @throws PrimaryKeyNotFoundException
+     */
+    public function forUser(Authenticatable $authenticatable): self
+    {
+        if(!$this->driver instanceof CacheDriver){
+            throw new PrimaryKeyNotFoundException('You can only use the forUser method with a cache driver');
+        }
+
+        $this->getDriver()->setPrimaryKey($authenticatable->getKey());
+        return $this;
+    }
+
+    /**
+     * Get the driver instance.
+     *
+     * @return AbstractDriver
+     * @throws DriverNotSupportedException
+     */
+    protected function getDriver(): AbstractDriver
+    {
+        if(null !== $this->driver) {
+            return $this->driver;
+        }
+
+        $driver = config('inertia-flash.driver', 'session');
+        if(!in_array($driver, ['session','cache'])) {
+            throw new DriverNotSupportedException($driver);
+        }
+
+        $this->driver = match($driver){
+            'session' => app(config('inertia-flash.session_driver', SessionDriver::class)),
+            'cache' => app(config('inertia-flash.cache-driver', CacheDriver::class)),
+            default => 'session',
+        };
+
+        return $this->driver;
     }
 }

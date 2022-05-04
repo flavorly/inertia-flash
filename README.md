@@ -26,18 +26,30 @@ php artisan vendor:publish --tag="inertia-flash-config"
 This is the contents of the published config file:
 
 ```php
+<?php
 return [
-  /*
+    /*
     |--------------------------------------------------------------------------
-    | Session Key
+    | Driver Configuration
     |--------------------------------------------------------------------------
     |
-    | Key to be used on session, when we flash the items. This should be a
-    | a reserved and unique key.
+    | You can configure inertia flash to use session or cache as the driver.
+    | when using the cache driver inertia flash will leverage your current
+    | cache driver and attempt to save the temporary shared keys there.
+    | A unique key is used to generate the unique key for each user
     |
+    | Drivers: 'cache' or 'session' are supported.
+    | Prefix Key : inertia_container_
+    | Cache TTL : Time in seconds to store the keys in cache.
     */
 
-    'session-key' => 'inertia-container',
+    'prefix_key' => 'inertia_container_',
+    'driver' => 'session',
+
+    'session-driver' => \Igerslike\InertiaFlash\Drivers\SessionDriver::class,
+    'cache-driver' => \Igerslike\InertiaFlash\Drivers\CacheDriver::class,
+
+    'cache-ttl' => 60,
 
     /*
     |--------------------------------------------------------------------------
@@ -45,14 +57,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may configure the keys that should be persisted on the session,
-    | even if they are empty they will be mapped to their values configured here.
+    | even if they are empty they will be mapped to their primitives configured here.
     |
     */
-
     'persistent-keys' => [
         // foo, bar, baz
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Middleware
@@ -63,6 +74,19 @@ return [
     |
     */
     'middleware' => 'web',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ignore URLs & Params
+    |--------------------------------------------------------------------------
+    |
+    | The URls to ignore by default, because inertia runs on web middleware
+    | Default For URLS: ['broadcasting/auth']
+    |
+    */
+    'ignore_urls' => [
+        'broadcasting/auth',
+    ],
 ];
 ```
 
@@ -114,6 +138,10 @@ inertia_flash()->shareUnless($foo === false, 'foo', 'bar');
 // Appending
 // You can also use append on regular share method as the third parameter
 inertia_flash()->append('foo', 'bar');
+
+// Sharing to a user
+// Only available if driver is cache, otherwise session will always use the current logged user
+inertia_flash()->forUser($user)->append('foo', 'bar');
 ```
 
 ## Testing
