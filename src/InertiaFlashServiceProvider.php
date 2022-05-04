@@ -3,10 +3,12 @@
 namespace Igerslike\InertiaFlash;
 
 use Igerslike\InertiaFlash\Http\Middleware\InertiaFlashMiddleware;
+use Igerslike\InertiaFlash\Inertia\ResponseFactory;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
+use Inertia\ResponseFactory as InertiaResponseFactory;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -30,6 +32,9 @@ class InertiaFlashServiceProvider extends PackageServiceProvider
     {
         // Register Singleton
         $this->app->singleton(InertiaFlash::class, fn ($app) => new InertiaFlash());
+
+        // Extend the Inertia Default Response Factory
+        $this->app->extend(InertiaResponseFactory::class, fn() => new ResponseFactory());
 
         // Append the Macro to forget specific Inertia Shared Keys
         Inertia::macro('forget', fn($keys) => Arr::forget($this->sharedProps,$keys));

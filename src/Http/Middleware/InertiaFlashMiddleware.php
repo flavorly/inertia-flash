@@ -24,6 +24,8 @@ class InertiaFlashMiddleware
             }
         }
 
+        ray('On the middleware',inertia_flash()->getShared(false));
+
         inertia_flash()->shareToInertia();
         return $next($request);
     }
