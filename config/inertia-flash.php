@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'session-key' => 'inertia-container',
+    'session-key' => '_inertia_container',
     'flush' => true,
 
     /*

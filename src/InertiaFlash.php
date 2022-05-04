@@ -3,6 +3,7 @@
 namespace Igerslike\InertiaFlash;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use Inertia\Inertia;
@@ -146,6 +147,10 @@ class InertiaFlash
      */
     public function shareToInertia(bool $flushSession = true): static
     {
+        if(!$this->shouldIgnore()) {
+            return $this;
+        }
+
         // Unserialize/Unpack any pending Serialized Closures
         $this->unserializeContainerValues();
 
@@ -174,6 +179,10 @@ class InertiaFlash
      */
     public function getShared(bool $flushSession = true): array
     {
+        if(!$this->shouldIgnore()) {
+            return [];
+        }
+
         $container = clone $this->container;
         // Flush on sharing
         if($flushSession && config('inertia-flash.flush', true)) {
@@ -198,6 +207,23 @@ class InertiaFlash
         session()->put(config('inertia-flash.session-key','inertia-container'), $this->container->toArray());
 
         return $this;
+    }
+
+    /**
+     * If it should be shared
+     * @param  Request|null  $request
+     * @return bool
+     */
+    public function shouldIgnore(?Request $request = null): bool
+    {
+        $request = $request ?? request();
+        $ignoreUrls = collect(config('inertia-flash.ignore_urls', ['broadcasting/auth']));
+        foreach($ignoreUrls as $url) {
+            if (str_contains($request->url(), $url)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
