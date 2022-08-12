@@ -36,7 +36,7 @@ class InertiaFlashServiceProvider extends PackageServiceProvider
         Inertia::macro('forget', fn($keys) => Arr::forget($this->sharedProps,$keys));
 
         // Tweak the RedirectResponse to add the Inertia Flash
-        RedirectResponse::macro('inertia',function($key,$value, bool $append = false){
+        RedirectResponse::macro('inertia', function($key, $value, bool $append = false): InertiaFlashServiceProvider {
             $key = is_array($key) ? $key : [$key => $value];
             foreach ($key as $k => $v) {
                 inertia_flash()->share($k,$v,$append);
