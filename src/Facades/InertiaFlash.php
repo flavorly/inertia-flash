@@ -1,11 +1,11 @@
 <?php
 
-namespace Igerslike\InertiaFlash\Facades;
+namespace flavorly\InertiaFlash\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Igerslike\InertiaFlash\InertiaFlash
+ * @see \flavorly\InertiaFlash\InertiaFlash
  */
 class InertiaFlash extends Facade
 {

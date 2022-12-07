@@ -1,5 +1,5 @@
 <?php
 
-use Igerslike\InertiaFlash\Tests\TestCase;
+use flavorly\InertiaFlash\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

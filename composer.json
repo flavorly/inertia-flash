@@ -1,12 +1,12 @@
 {
-    "name": "igerslike/inertia-flash",
+    "name": "flavorly/inertia-flash",
     "description": "A Quick way to flash & share InertiaJS Variables from anywhere, persisting on session.",
     "keywords": [
-        "igerslike",
+        "flavorly",
         "laravel",
         "inertia-flash"
     ],
-    "homepage": "https://github.com/igerslike/inertia-flash",
+    "homepage": "https://github.com/flavorly/inertia-flash",
     "license": "MIT",
     "authors": [
         {
@@ -36,8 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Igerslike\\InertiaFlash\\": "src",
-            "Igerslike\\InertiaFlash\\Database\\Factories\\": "database/factories"
+            "flavorly\\InertiaFlash\\": "src",
+            "flavorly\\InertiaFlash\\Database\\Factories\\": "database/factories"
         },
         "files": [
             "src/Helpers/helpers.php"
@@ -45,7 +45,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Igerslike\\InertiaFlash\\Tests\\": "tests"
+            "flavorly\\InertiaFlash\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -63,10 +63,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Igerslike\\InertiaFlash\\InertiaFlashServiceProvider"
+                "flavorly\\InertiaFlash\\InertiaFlashServiceProvider"
             ],
             "aliases": {
-                "InertiaFlash": "Igerslike\\InertiaFlash\\Facades\\InertiaFlash"
+                "InertiaFlash": "flavorly\\InertiaFlash\\Facades\\InertiaFlash"
             }
         }
     },

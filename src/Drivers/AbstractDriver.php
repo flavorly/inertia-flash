@@ -1,8 +1,8 @@
 <?php
 
-namespace Igerslike\InertiaFlash\Drivers;
+namespace flavorly\InertiaFlash\Drivers;
 
-use Igerslike\InertiaFlash\Exceptions\PrimaryKeyNotFoundException;
+use flavorly\InertiaFlash\Exceptions\PrimaryKeyNotFoundException;
 use Illuminate\Support\Collection;
 
 abstract class AbstractDriver

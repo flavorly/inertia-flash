@@ -1,6 +1,6 @@
 <?php
 
-namespace Igerslike\InertiaFlash\Exceptions;
+namespace flavorly\InertiaFlash\Exceptions;
 
 class DriverNotSupportedException extends InertiaFlashException
 {

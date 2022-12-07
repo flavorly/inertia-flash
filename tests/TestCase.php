@@ -1,10 +1,10 @@
 <?php
 
-namespace Igerslike\InertiaFlash\Tests;
+namespace flavorly\InertiaFlash\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Igerslike\InertiaFlash\InertiaFlashServiceProvider;
+use flavorly\InertiaFlash\InertiaFlashServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Igerslike\\InertiaFlash\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'flavorly\\InertiaFlash\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 

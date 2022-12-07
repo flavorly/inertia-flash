@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) igerslike <support@indigit.pt>
+Copyright (c) flavorly <support@indigit.pt>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

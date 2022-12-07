@@ -2,10 +2,10 @@
 
 <p align="center"><img src="./assets/cover.png"></p>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/igerslike/inertia-flash.svg?style=flat-square)](https://packagist.org/packages/igerslike/inertia-flash)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/igerslike/inertia-flash/run-tests?label=tests)](https://github.com/igerslike/inertia-flash/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/igerslike/inertia-flash/Check%20&%20fix%20styling?label=code%20style)](https://github.com/igerslike/inertia-flash/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/igerslike/inertia-flash.svg?style=flat-square)](https://packagist.org/packages/igerslike/inertia-flash)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/flavorly/inertia-flash.svg?style=flat-square)](https://packagist.org/packages/flavorly/inertia-flash)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/flavorly/inertia-flash/run-tests?label=tests)](https://github.com/flavorly/inertia-flash/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/flavorly/inertia-flash/Check%20&%20fix%20styling?label=code%20style)](https://github.com/flavorly/inertia-flash/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/flavorly/inertia-flash.svg?style=flat-square)](https://packagist.org/packages/flavorly/inertia-flash)
 
 A Quick way to flash & share variables to [InertiaJS](https://inertiajs.com/) that persist on session or cache. Really useful for redirects & returns!
 Sharing to Inertia anywhere :)
@@ -15,7 +15,7 @@ Sharing to Inertia anywhere :)
 You can install the package via composer:
 
 ```bash
-composer require igerslike/inertia-flash
+composer require flavorly/inertia-flash
 ```
 
 You can publish the config file with:
@@ -47,8 +47,8 @@ return [
     'prefix_key' => 'inertia_container_',
     'driver' => 'session',
 
-    'session-driver' => \Igerslike\InertiaFlash\Drivers\SessionDriver::class,
-    'cache-driver' => \Igerslike\InertiaFlash\Drivers\CacheDriver::class,
+    'session-driver' => \flavorly\InertiaFlash\Drivers\SessionDriver::class,
+    'cache-driver' => \flavorly\InertiaFlash\Drivers\CacheDriver::class,
 
     'cache-ttl' => 60,
 
@@ -89,10 +89,10 @@ Keep in the mind that the values will only be kept on the current or next reques
 You may also use closures that under-the-hood will be converted to Laravel Closure Serializer ( Previously Opis )
 
 ```php
-use \Igerslike\InertiaFlash\InertiaFlash;
+use \flavorly\InertiaFlash\InertiaFlash;
 
 // Resolve from container
-$flash = app(\Igerslike\InertiaFlash\InertiaFlash::class);
+$flash = app(\flavorly\InertiaFlash\InertiaFlash::class);
 $flash->share('foo', 'bar');
 
 // Or using the helper
@@ -164,7 +164,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [jon](https://github.com/igerslike)
+- [jon](https://github.com/flavorly)
 - [All Contributors](../../contributors)
 
 ## License

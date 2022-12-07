@@ -18,8 +18,8 @@ return [
     'prefix_key' => 'inertia_container_',
     'driver' => 'session',
 
-    'session-driver' => \Igerslike\InertiaFlash\Drivers\SessionDriver::class,
-    'cache-driver' => \Igerslike\InertiaFlash\Drivers\CacheDriver::class,
+    'session-driver' => \flavorly\InertiaFlash\Drivers\SessionDriver::class,
+    'cache-driver' => \flavorly\InertiaFlash\Drivers\CacheDriver::class,
 
     'cache-ttl' => 60,
 
