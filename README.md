@@ -47,8 +47,8 @@ return [
     'prefix_key' => 'inertia_container_',
     'driver' => 'session',
 
-    'session-driver' => \flavorly\InertiaFlash\Drivers\SessionDriver::class,
-    'cache-driver' => \flavorly\InertiaFlash\Drivers\CacheDriver::class,
+    'session-driver' => \Flavorly\InertiaFlash\Drivers\SessionDriver::class,
+    'cache-driver' => \Flavorly\InertiaFlash\Drivers\CacheDriver::class,
 
     'cache-ttl' => 60,
 
@@ -89,10 +89,10 @@ Keep in the mind that the values will only be kept on the current or next reques
 You may also use closures that under-the-hood will be converted to Laravel Closure Serializer ( Previously Opis )
 
 ```php
-use \flavorly\InertiaFlash\InertiaFlash;
+use Flavorly\InertiaFlash\InertiaFlash;
 
 // Resolve from container
-$flash = app(\flavorly\InertiaFlash\InertiaFlash::class);
+$flash = app(\Flavorly\InertiaFlash\InertiaFlash::class);
 $flash->share('foo', 'bar');
 
 // Or using the helper

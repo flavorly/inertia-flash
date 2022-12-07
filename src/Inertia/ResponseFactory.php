@@ -1,6 +1,6 @@
 <?php
 
-namespace flavorly\InertiaFlash\Inertia;
+namespace Flavorly\InertiaFlash\Inertia;
 use Illuminate\Contracts\Support\Arrayable;
 use Inertia\Response;
 use \Inertia\ResponseFactory as BaseResponseFactory;

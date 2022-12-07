@@ -1,6 +1,6 @@
 <?php
 
-namespace flavorly\InertiaFlash\Exceptions;
+namespace Flavorly\InertiaFlash\Exceptions;
 
 class InertiaFlashException extends \Exception
 {

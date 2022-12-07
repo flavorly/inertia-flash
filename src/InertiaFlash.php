@@ -1,13 +1,13 @@
 <?php
 
-namespace flavorly\InertiaFlash;
+namespace Flavorly\InertiaFlash;
 
 use Closure;
-use flavorly\InertiaFlash\Drivers\AbstractDriver;
-use flavorly\InertiaFlash\Drivers\CacheDriver;
-use flavorly\InertiaFlash\Drivers\SessionDriver;
-use flavorly\InertiaFlash\Exceptions\DriverNotSupportedException;
-use flavorly\InertiaFlash\Exceptions\PrimaryKeyNotFoundException;
+use Flavorly\InertiaFlash\Drivers\AbstractDriver;
+use Flavorly\InertiaFlash\Drivers\CacheDriver;
+use Flavorly\InertiaFlash\Drivers\SessionDriver;
+use Flavorly\InertiaFlash\Exceptions\DriverNotSupportedException;
+use Flavorly\InertiaFlash\Exceptions\PrimaryKeyNotFoundException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

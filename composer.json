@@ -36,8 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "flavorly\\InertiaFlash\\": "src",
-            "flavorly\\InertiaFlash\\Database\\Factories\\": "database/factories"
+            "Flavorly\\InertiaFlash\\": "src",
+            "Flavorly\\InertiaFlash\\Database\\Factories\\": "database/factories"
         },
         "files": [
             "src/Helpers/helpers.php"
@@ -45,7 +45,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "flavorly\\InertiaFlash\\Tests\\": "tests"
+            "Flavorly\\InertiaFlash\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -63,10 +63,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "flavorly\\InertiaFlash\\InertiaFlashServiceProvider"
+                "Flavorly\\InertiaFlash\\InertiaFlashServiceProvider"
             ],
             "aliases": {
-                "InertiaFlash": "flavorly\\InertiaFlash\\Facades\\InertiaFlash"
+                "InertiaFlash": "Flavorly\\InertiaFlash\\Facades\\InertiaFlash"
             }
         }
     },

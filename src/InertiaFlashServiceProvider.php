@@ -1,8 +1,8 @@
 <?php
 
-namespace flavorly\InertiaFlash;
+namespace Flavorly\InertiaFlash;
 
-use flavorly\InertiaFlash\Inertia\ResponseFactory;
+use Flavorly\InertiaFlash\Inertia\ResponseFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;

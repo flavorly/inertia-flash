@@ -1,6 +1,6 @@
 <?php
 
-use flavorly\InertiaFlash\InertiaFlash;
+use Flavorly\InertiaFlash\InertiaFlash;
 
 if(!function_exists('inertia_flash')){
 

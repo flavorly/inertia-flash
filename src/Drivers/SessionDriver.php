@@ -1,6 +1,6 @@
 <?php
 
-namespace flavorly\InertiaFlash\Drivers;
+namespace Flavorly\InertiaFlash\Drivers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;

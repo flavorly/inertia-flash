@@ -1,6 +1,6 @@
 <?php
 
-namespace flavorly\InertiaFlash\Drivers;
+namespace Flavorly\InertiaFlash\Drivers;
 
 use Carbon\Carbon;
 use Illuminate\Cache\CacheManager;
