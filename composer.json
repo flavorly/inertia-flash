@@ -20,7 +20,7 @@
         "laravel/framework": ">=v9.0.0",
         "inertiajs/inertia-laravel": "^0.5.4|^0.6.2|^1.0.0",
         "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^9.0"
+        "illuminate/contracts": ">=9.0"
     },
     "require-dev": {
         "nunomaduro/collision": "^6.0",
