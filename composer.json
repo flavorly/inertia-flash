@@ -23,7 +23,7 @@
     },
     "suggest": {
         "inertiajs/inertia-laravel": "Allows you to flash and share InertiaJS variables (0.5.4|^0.6.2|^1.0.0)",
-        "inertiajs-revamped/laravel": "A fork of Official Inertia with some upstream bugfixes",
+        "inertiajs-revamped/laravel": "A fork of Official Inertia with some upstream bugfixes"
     },
     "require-dev": {
         "nunomaduro/collision": "^6.0",
