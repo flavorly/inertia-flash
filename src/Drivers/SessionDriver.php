@@ -12,7 +12,7 @@ class SessionDriver extends AbstractDriver
     protected ?string $primaryKey = 'session';
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function get(): Collection
     {
@@ -20,7 +20,7 @@ class SessionDriver extends AbstractDriver
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function put(Collection $container): void
     {
@@ -28,7 +28,7 @@ class SessionDriver extends AbstractDriver
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function flush(): void
     {

@@ -2,9 +2,9 @@
 
 namespace Flavorly\InertiaFlash\Tests;
 
+use Flavorly\InertiaFlash\InertiaFlashServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Flavorly\InertiaFlash\InertiaFlashServiceProvider;
 
 class TestCase extends Orchestra
 {

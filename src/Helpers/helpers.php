@@ -2,7 +2,7 @@
 
 use Flavorly\InertiaFlash\InertiaFlash;
 
-if(!function_exists('inertia_flash')){
+if (! function_exists('inertia_flash')) {
 
     function inertia_flash(): InertiaFlash
     {

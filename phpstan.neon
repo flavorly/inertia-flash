@@ -1,0 +1,19 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+parameters:
+    editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+    paths:
+        - src/
+    # Level 9 is the highest level
+    level: 9
+    ignoreErrors:
+        - '#to resolve the template type#i'
+        - '#\$value of function collect expects Illuminate\\Cont#i'
+    scanFiles:
+    excludePaths:
+        - tests/*/Feature/*
+        - tests/*/Unit/*
+        - tests/*/Datasets/*
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    treatPhpDocTypesAsCertain: false
