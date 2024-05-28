@@ -1,9 +1,10 @@
 <?php
 
 namespace Flavorly\InertiaFlash\Inertia;
+
 use Illuminate\Contracts\Support\Arrayable;
 use Inertia\Response;
-use \Inertia\ResponseFactory as BaseResponseFactory;
+use Inertia\ResponseFactory as BaseResponseFactory;
 
 class ResponseFactory extends BaseResponseFactory
 {
@@ -14,9 +15,7 @@ class ResponseFactory extends BaseResponseFactory
      * When we do full page reloads Inertia Flash will work just fine,
      * but when partial reloads or Inertia Link is clicked a XHR request is made and the props are "lost" in a limbo.
      *
-     * @param  string  $component
-     * @param  array|Arrayable  $props
-     * @return Response
+     * @param  array<string,mixed>|Arrayable<string,mixed>  $props
      */
     public function render(string $component, $props = []): Response
     {

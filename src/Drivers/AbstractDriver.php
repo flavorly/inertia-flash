@@ -2,7 +2,6 @@
 
 namespace Flavorly\InertiaFlash\Drivers;
 
-use Flavorly\InertiaFlash\Exceptions\PrimaryKeyNotFoundException;
 use Illuminate\Support\Collection;
 
 abstract class AbstractDriver
@@ -11,50 +10,45 @@ abstract class AbstractDriver
 
     /**
      * Get the data on the driver
-     * @return Collection
+     *
+     * @return Collection<(string|int),mixed>
      */
-    abstract function get(): Collection;
+    abstract public function get(): Collection;
 
     /**
      * Put the data into the driver
-     * @param  Collection  $container
-     * @return void
+     *
+     * @param  Collection<(string|int),mixed>  $container
      */
-    abstract function put(Collection $container): void;
+    abstract public function put(Collection $container): void;
 
     /**
      * Flush the data available on the driver
-     * @return void
      */
-    abstract function flush(): void;
+    abstract public function flush(): void;
 
     /**
      * Set the Primary Key
-     * @param  string  $key
+     *
      * @return $this
      */
     public function setPrimaryKey(string $key): static
     {
         $this->primaryKey = $key;
+
         return $this;
     }
 
     /**
      * Gets & Generates the primary key
-     * @return string
-     * @throws PrimaryKeyNotFoundException
      */
     protected function key(): string
     {
-        if(null === $this->primaryKey){
-            throw new PrimaryKeyNotFoundException();
-        }
-
         return implode(
             '_',
             [
-                config('inertia-flash.prefix_key','inertia_container_'),
-                $this->primaryKey
+                config('inertia-flash.prefix_key', 'inertia_container_'),
+                $this->primaryKey ?? 'default',
             ]
         );
     }
