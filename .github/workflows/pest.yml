@@ -1,8 +1,5 @@
 name: 🚥 Flow Pest
 
-env:
-  COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{secrets.COMPOSER_AUTH}}"} }'
-
 on:
   push:
     branches:
