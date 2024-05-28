@@ -17,8 +17,10 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.3]
-        laravel: [11.0]
-        testbench: [9.1.0]
+        laravel: [11.*]
+        include:
+          - laravel: 11.*
+            testbench: 9.*
 
     name: Tests
 
