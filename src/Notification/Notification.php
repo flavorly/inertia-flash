@@ -9,6 +9,7 @@ use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataType;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataViaChannel;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDispatcher;
 use Flavorly\InertiaFlash\Notification\Concerns\HasReadableNotifications;
+use Flavorly\InertiaFlash\Notification\Concerns\TransformsIntoLaravelNotification;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
 use Spatie\LaravelData\Data;
 
@@ -21,6 +22,7 @@ class Notification extends Data
     use HasNotificationDataViaChannel;
     use HasNotificationDispatcher;
     use HasReadableNotifications;
+    use TransformsIntoLaravelNotification;
 
     /**
      * A unique ID, if its a persistent notification this should be the ID of the notification on the database
