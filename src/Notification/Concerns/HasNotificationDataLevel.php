@@ -14,7 +14,6 @@ trait HasNotificationDataLevel
     /**
      * Set the notification to given level
      *
-     * @param  NotificationLevelEnum  $level
      * @return $this
      */
     public function level(NotificationLevelEnum $level): static
@@ -40,6 +39,7 @@ trait HasNotificationDataLevel
     public function success(): static
     {
         $this->level = NotificationLevelEnum::Success;
+
         return $this;
     }
 
@@ -49,6 +49,7 @@ trait HasNotificationDataLevel
     public function warning(): static
     {
         $this->level = NotificationLevelEnum::Warning;
+
         return $this;
     }
 
@@ -58,6 +59,7 @@ trait HasNotificationDataLevel
     public function error(): static
     {
         $this->level = NotificationLevelEnum::Error;
+
         return $this;
     }
 }

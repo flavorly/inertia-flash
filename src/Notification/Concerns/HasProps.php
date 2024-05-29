@@ -7,6 +7,7 @@ trait HasProps
     /**
      * Stores the icon configuration
      * If we should get the icon from level, raw icon and props
+     *
      * @var array<string,mixed>
      */
     public array $props = [];
@@ -20,6 +21,7 @@ trait HasProps
     public function props(array $props = []): static
     {
         $this->props = array_merge($this->props, $props);
+
         return $this;
     }
 }

@@ -14,12 +14,12 @@ trait HasPosition
      * Raw icon ( usually for emojis or html )
      * Keep in mind that this is not sanitized
      *
-     * @param  int  $position
      * @return $this
      */
     public function position(int $position): static
     {
         $this->position = $position;
+
         return $this;
     }
 }

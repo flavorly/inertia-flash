@@ -2,23 +2,25 @@
 
 namespace Flavorly\InertiaFlash\Notification;
 
+use Flavorly\InertiaFlash\Notification\Concerns\HasIcon;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationActions;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataLevel;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataType;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataViaChannel;
-use Flavorly\InertiaFlash\Notification\Concerns\HasIcon;
-use Flavorly\InertiaFlash\Notification\Data\NotificationReadableData;
+use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDispatcher;
+use Flavorly\InertiaFlash\Notification\Concerns\HasReadableNotifications;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
-use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
 class Notification extends Data
 {
+    use HasIcon;
     use HasNotificationActions;
     use HasNotificationDataLevel;
     use HasNotificationDataType;
     use HasNotificationDataViaChannel;
-    use HasIcon;
+    use HasNotificationDispatcher;
+    use HasReadableNotifications;
 
     /**
      * A unique ID, if its a persistent notification this should be the ID of the notification on the database
@@ -54,23 +56,36 @@ class Notification extends Data
     public ?int $timeout = null;
 
     /**
-     * Stores content blocks if required
-     *
-     * @var Collection<int, NotificationContentBlock>|null
-     */
-    public ?Collection $content;
-
-    /**
-     * If the notification is readable ( belongs to a backend kind of )
-     */
-    public ?NotificationReadableData $readable = null;
-
-    /**
      * Stores the timestamps for the notification
      */
     public NotificationTimestampsData $timestamps;
 
+    /**
+     * Just a blind constructor, we should be able to compose via fluent
+     * So no need to pass any arguments
+     */
     public function __construct()
     {
+    }
+
+    /**
+     * Sets a message & title for the notification
+     */
+    public function message(string $message, ?string $title = null): static
+    {
+        $this->message = $message;
+        $this->title = $title ?? $this->title;
+
+        return $this;
+    }
+
+    /**
+     * Sets the title for the notification
+     */
+    public function title(?string $title = null): static
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }

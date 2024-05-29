@@ -16,6 +16,11 @@ trait HasNotificationDataViaChannel
     public Collection $via;
 
     /**
+     * The namespace where the notification will be dispatched when sharing with inertia
+     */
+    public string $viaInertiaNamespace = 'auth.notifications';
+
+    /**
      * Routes the notification to the given channel, defaults to Broadcast & Database
      *
      * @param  array<int,(string|NotificationViaEnum)>  $via
@@ -67,12 +72,16 @@ trait HasNotificationDataViaChannel
     }
 
     /**
-     * Sends Via Mail
+     * Sends Via Inertia
      */
-    public function viaInertia(): static
+    public function viaInertia(?string $namespace = null): static
     {
         if (! $this->via->contains(NotificationViaEnum::Inertia)) {
             $this->via->push(NotificationViaEnum::Inertia);
+        }
+
+        if ($namespace) {
+            $this->viaInertiaNamespace = $namespace;
         }
 
         return $this;

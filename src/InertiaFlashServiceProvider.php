@@ -16,6 +16,7 @@ class InertiaFlashServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('inertia-flash')
+            ->hasTranslations()
             ->hasConfigFile();
     }
 

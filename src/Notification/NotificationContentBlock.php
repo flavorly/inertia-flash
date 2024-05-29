@@ -9,20 +9,21 @@ use Spatie\LaravelData\Data;
 class NotificationContentBlock extends Data
 {
     use Concerns\HasIcon;
-    use Concerns\HasProps;
     use Concerns\HasPosition;
+    use Concerns\HasProps;
 
     protected string $id;
 
     public function __construct(
         protected ContentBlockTypeEnum $type = ContentBlockTypeEnum::Tag,
     ) {
-       $this->id = Str::uuid();
+        $this->id = Str::uuid();
     }
 
     public function id(string $id): static
     {
         $this->id = $id;
+
         return $this;
     }
 
