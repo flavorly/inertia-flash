@@ -15,7 +15,7 @@ trait HasPosition
      * Keep in mind that this is not sanitized
      *
      * @param  int  $position
-     * @return HasPosition
+     * @return $this
      */
     public function position(int $position): static
     {

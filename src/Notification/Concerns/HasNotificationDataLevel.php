@@ -27,12 +27,9 @@ trait HasNotificationDataLevel
     /**
      * Shortcut for message & level for Info
      */
-    public function info(?string $message = null, ?int $timeout = null): static
+    public function info(): static
     {
         $this->level = NotificationLevelEnum::Info;
-        $this->message = $message;
-        $this->timeout = $timeout ?? $this->timeout;
-        $this->icon['level'] = 'info';
 
         return $this;
     }
@@ -40,39 +37,27 @@ trait HasNotificationDataLevel
     /**
      * Shortcut for message & level for Info
      */
-    public function success(?string $message = null, ?int $timeout = null): static
+    public function success(): static
     {
         $this->level = NotificationLevelEnum::Success;
-        $this->message = $message;
-        $this->timeout = $timeout ?? $this->timeout;
-        $this->icon['level'] = 'success';
-
         return $this;
     }
 
     /**
      * Shortcut for message & level for Warning
      */
-    public function warning(?string $message = null, ?int $timeout = null): static
+    public function warning(): static
     {
         $this->level = NotificationLevelEnum::Warning;
-        $this->message = $message;
-        $this->timeout = $timeout ?? $this->timeout;
-        $this->icon['level'] = 'warning';
-
         return $this;
     }
 
     /**
      * Shortcut for message & level for Error
      */
-    public function error(?string $message = null, ?int $timeout = null): static
+    public function error(): static
     {
         $this->level = NotificationLevelEnum::Error;
-        $this->message = $message ?? $this->message;
-        $this->timeout = $timeout ?? $this->timeout;
-        $this->icon['level'] = 'danger';
-
         return $this;
     }
 }

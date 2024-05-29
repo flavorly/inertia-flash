@@ -3,10 +3,10 @@
 namespace Flavorly\InertiaFlash\Notification;
 
 use Flavorly\InertiaFlash\Notification\Enums\ContentBlockTypeEnum;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
+use Spatie\LaravelData\Data;
 
-class NotificationContentBlock implements Arrayable
+class NotificationContentBlock extends Data
 {
     use Concerns\HasIcon;
     use Concerns\HasProps;
@@ -79,15 +79,5 @@ class NotificationContentBlock implements Arrayable
         ]);
 
         return $this;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'type' => $this->type,
-            'props' => $this->props,
-            'position' => $this->position,
-        ];
     }
 }
