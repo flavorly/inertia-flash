@@ -12,6 +12,9 @@ class NotificationReadableData extends Data
          */
         public bool $enable = false,
 
+        /**
+         * The URL to mark the notification as read
+         */
         public ?string $url = null,
 
         /**
@@ -23,13 +26,6 @@ class NotificationReadableData extends Data
          * Method to use to mark the notification as read
          */
         public string $method = 'post',
-
-        /**
-         * The data to send to the server
-         *
-         * @var array<string,mixed>
-         */
-        public array $data = [],
     ) {
     }
 }

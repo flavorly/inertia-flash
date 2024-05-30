@@ -3,11 +3,11 @@
 namespace Flavorly\InertiaFlash\Notification\Actions;
 
 use Exception;
-use Flavorly\InertiaFlash\Notification\Contracts\ReadsFlashNotifications;
+use Flavorly\InertiaFlash\Notification\Contracts\ReadableNotifications;
 use Flavorly\InertiaFlash\Notification\Notification;
 use Illuminate\Notifications\HasDatabaseNotifications;
 
-class NotificationReadAction implements ReadsFlashNotifications
+class NotificationReadAction implements ReadableNotifications
 {
     /**
      * @inheritdoc
@@ -47,13 +47,15 @@ class NotificationReadAction implements ReadsFlashNotifications
      */
     public function getUrl(mixed $notifiable, Notification $notification): ?string
     {
-        if(! $notification->readable->enable || ! $notification->readable->route || ! $notification->readable->data) {
+        if(! $notification->readable->enable || ! $notification->readable->route) {
             return null;
         }
 
         return route(
             $notification->readable->route,
-            $notification->readable->data
+            [
+                'notification' => $notification->id
+            ]
         );
     }
 

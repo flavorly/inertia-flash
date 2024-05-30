@@ -44,6 +44,12 @@ class NotificationActionData
          * @var bool
          */
         public bool $is_close = false,
+
+        /**
+         * HTML Props
+         * @var array<string,mixed>
+         */
+        public array $props = []
     ) {
     }
 }

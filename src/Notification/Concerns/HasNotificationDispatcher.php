@@ -22,6 +22,16 @@ trait HasNotificationDispatcher
     public function to(mixed $notifiable): static
     {
         $this->notifiable = $notifiable;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function toUser(): static
+    {
+        $this->attemptToGetNotifiable();
         return $this;
     }
 
@@ -29,18 +39,24 @@ trait HasNotificationDispatcher
      * Dispatch the notification ( Queued if that's the case )
      * Here is where we do the main thing
      */
-    public function dispatch(): void
+    public function dispatch(): static
     {
         $this->dispatchViaInertia();
+        $this->dispatchViaLaravel();
+
+        return $this;
     }
 
     /**
      * Dispatch the notification now, immediately, similar to Laravel
      * Here is where we do the main thing
      */
-    public function dispatchNow(): void
+    public function dispatchNow(): static
     {
         $this->dispatchViaInertia();
+        $this->dispatchViaLaravel(true);
+
+        return $this;
     }
 
     /**
@@ -53,6 +69,12 @@ trait HasNotificationDispatcher
         if(! $this->notifiable) {
             return;
         }
+
+        if($now){
+            $this->notifiable->notifyNow($this->toNotification());
+            return;
+        }
+
         $this->notifiable->notify($this->toNotification());
     }
 
@@ -62,10 +84,6 @@ trait HasNotificationDispatcher
     protected function dispatchViaInertia(): void
     {
         // Noop, we dont want to share via Inertia on console
-        if(app()->runningInConsole()) {
-            return;
-        }
-
         if ($this->via->contains(NotificationViaEnum::Inertia) || $this->via->contains('inertia')) {
             inertia_flash()->append(
                 $this->viaInertiaNamespace,

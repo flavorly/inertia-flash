@@ -9,14 +9,14 @@ trait HasNotificationDataType
     /**
      * How the frontend should handle the notification, default is Flash
      */
-    public NotificationTypeEnum $kind = NotificationTypeEnum::Flash;
+    public NotificationTypeEnum $type = NotificationTypeEnum::Flash;
 
     /**
      * Sets the notification type
      */
     public function type(NotificationTypeEnum $kind): static
     {
-        $this->kind = $kind;
+        $this->type = $kind;
 
         return $this;
     }
@@ -26,7 +26,7 @@ trait HasNotificationDataType
      */
     public function flash(): static
     {
-        $this->kind = NotificationTypeEnum::Flash;
+        $this->type = NotificationTypeEnum::Flash;
 
         return $this;
     }
@@ -36,7 +36,7 @@ trait HasNotificationDataType
      */
     public function dialog(): static
     {
-        $this->kind = NotificationTypeEnum::Dialog;
+        $this->type = NotificationTypeEnum::Dialog;
 
         return $this;
     }
@@ -46,7 +46,7 @@ trait HasNotificationDataType
      */
     public function toast(): static
     {
-        $this->kind = NotificationTypeEnum::Toast;
+        $this->type = NotificationTypeEnum::Toast;
 
         return $this;
     }

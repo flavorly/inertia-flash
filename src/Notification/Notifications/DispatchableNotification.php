@@ -2,8 +2,8 @@
 
 namespace Flavorly\InertiaFlash\Notification\Notifications;
 
-use Flavorly\InertiaFlash\Notification\Contracts\InertiaFlashNotification;
-use Flavorly\InertiaFlash\Notification\Contracts\ReadsFlashNotifications;
+use Flavorly\InertiaFlash\Notification\Contracts\NotificationDispatchable;
+use Flavorly\InertiaFlash\Notification\Contracts\ReadableNotifications;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum;
 use Flavorly\InertiaFlash\Notification\Notification;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -13,7 +13,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as BaseNotification;
 
-class AbstractNotificationInertia extends BaseNotification implements InertiaFlashNotification, ShouldQueue
+class DispatchableNotification extends BaseNotification implements NotificationDispatchable, ShouldQueue
 {
     use InteractsWithSockets;
     use Queueable;
@@ -71,32 +71,23 @@ class AbstractNotificationInertia extends BaseNotification implements InertiaFla
     }
 
     /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
+     * @inheritdoc
      */
     public function toArray(object $notifiable): array
     {
-        $hasDatabase = $this->notification->via->contains(NotificationViaEnum::Database);
-        // If its Database channel, then we try to be smart here and append the necessary stuff
-        if ($hasDatabase) {
-            /** @var ReadsFlashNotifications $readable */
-            $readable = app(config('inertia-flash.notifications.readable'));
-            $this->notification->readable->enable = true;
-            $this->notification->readable->url = $readable->getUrl($notifiable, $this->notification);
-            $this->notification->readable->method = $readable->getMethod($notifiable, $this->notification);
-        }
-
+        $id = $this->id ?? $this->notification->id;
+        // URL is re-generated here with the actual database ID if present
+        $this->notification->id($id);
         return [
             ...$this->notification->toArray(),
-            'id' => $this->id,
+            'id' => $id,
             'created_at' => now()->toDateTimeString(),
             'read_at' => null,
         ];
     }
 
     /**
-     * Routes the notification to database
+     * @inheritdoc
      */
     public function toDatabase(object $notifiable): array
     {
@@ -104,9 +95,7 @@ class AbstractNotificationInertia extends BaseNotification implements InertiaFla
     }
 
     /**
-     * Determine which connections should be used for each notification channel.
-     *
-     * @return array<string, string>
+     * @inheritdoc
      */
     public function viaConnections(): array
     {
@@ -114,9 +103,7 @@ class AbstractNotificationInertia extends BaseNotification implements InertiaFla
     }
 
     /**
-     * Determine which queues should be used for each notification channel.
-     *
-     * @return array<string, string>
+     * @inheritdoc
      */
     public function viaQueues(): array
     {

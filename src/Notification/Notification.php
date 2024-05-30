@@ -2,6 +2,7 @@
 
 namespace Flavorly\InertiaFlash\Notification;
 
+use Flavorly\InertiaFlash\Notification\Concerns\HasContentBlocks;
 use Flavorly\InertiaFlash\Notification\Concerns\HasIcon;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationActions;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataLevel;
@@ -10,7 +11,12 @@ use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataViaChannel;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDispatcher;
 use Flavorly\InertiaFlash\Notification\Concerns\HasReadableNotifications;
 use Flavorly\InertiaFlash\Notification\Concerns\TransformsIntoLaravelNotification;
+use Flavorly\InertiaFlash\Notification\Data\NotificationReadableData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
+use Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum;
+use Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum;
+use Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum;
+use Illuminate\Support\Str;
 use Spatie\LaravelData\Data;
 
 class Notification extends Data
@@ -23,6 +29,7 @@ class Notification extends Data
     use HasNotificationDispatcher;
     use HasReadableNotifications;
     use TransformsIntoLaravelNotification;
+    use HasContentBlocks;
 
     /**
      * A unique ID, if its a persistent notification this should be the ID of the notification on the database
@@ -68,6 +75,37 @@ class Notification extends Data
      */
     public function __construct()
     {
+        // But here we need to ensure the defaults
+        $this->ensureDefaults();
+        $this->actions = collect();
+        $this->contentBlocks = collect();
+        $this->id = Str::uuid();
+        $this->readable = new NotificationReadableData();
+    }
+
+    /**
+     * Ensures the user defaults are set
+     * @return void
+     */
+    protected function ensureDefaults(): void
+    {
+        $this->via(config('inertia-flash.notifications.defaults.via', [NotificationViaEnum::Inertia,]));
+        $this->level(config('inertia-flash.notifications.defaults.level', NotificationLevelEnum::Info));
+        $this->type(config('inertia-flash.notifications.defaults.type',NotificationTypeEnum::Flash));
+    }
+
+    /**
+     * The unique ID of the notification
+     * @param  int|string  $id
+     * @return $this
+     */
+    public function id(int|string $id): static
+    {
+        $this->id = $id;
+
+        // Generate the URL once a new ID is set
+        $this->ensureReadableURLIsGenerated();
+        return $this;
     }
 
     /**
@@ -77,7 +115,6 @@ class Notification extends Data
     {
         $this->message = $message;
         $this->title = $title ?? $this->title;
-
         return $this;
     }
 
@@ -89,5 +126,18 @@ class Notification extends Data
         $this->title = $title;
 
         return $this;
+    }
+
+    /**
+     * Returns the notification as a json
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $encode = json_encode($this->toArray());
+        if($encode === false) {
+            return '';
+        }
+        return $encode;
     }
 }

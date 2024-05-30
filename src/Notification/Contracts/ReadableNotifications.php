@@ -5,7 +5,7 @@ namespace Flavorly\InertiaFlash\Notification\Contracts;
 use Flavorly\InertiaFlash\Notification\Notification;
 use Illuminate\Notifications\HasDatabaseNotifications;
 
-interface ReadsFlashNotifications
+interface ReadableNotifications
 {
     /**
      * Reads a Flash Notification

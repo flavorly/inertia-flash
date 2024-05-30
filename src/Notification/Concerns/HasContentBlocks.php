@@ -4,7 +4,7 @@ namespace Flavorly\InertiaFlash\Notification\Concerns;
 
 use Closure;
 use Flavorly\InertiaFlash\Notification\NotificationContentBlock;
-use Ramsey\Collection\Collection;
+use Illuminate\Support\Collection;
 
 trait HasContentBlocks
 {
@@ -29,8 +29,8 @@ trait HasContentBlocks
         if ($content instanceof Closure) {
             $content = $content(new NotificationContentBlock());
         }
-        $this->contentBlocks[] = $content->toArray();
-
+        $this->contentBlocks = $this->contentBlocks ?? collect();
+        $this->contentBlocks->push($content);
         return $this;
     }
 }
