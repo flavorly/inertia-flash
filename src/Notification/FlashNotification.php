@@ -16,7 +16,6 @@ use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum;
 use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\LaravelData\Data;

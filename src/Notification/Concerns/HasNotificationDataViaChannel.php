@@ -11,7 +11,7 @@ trait HasNotificationDataViaChannel
      * How the notification should be sent
      * Via Inertia, Email, sms, etc
      *
-     * @var Collection<int,(string|NotificationViaEnum)>
+     * @var Collection<int,string|NotificationViaEnum>
      */
     public Collection $via;
 
@@ -23,7 +23,7 @@ trait HasNotificationDataViaChannel
     /**
      * Routes the notification to the given channel, defaults to Broadcast & Database
      *
-     * @param  array<int,(string|NotificationViaEnum)>  $via
+     * @param  array<int,string|NotificationViaEnum>  $via
      */
     public function via(array $via = [
         NotificationViaEnum::Broadcast,

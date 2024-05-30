@@ -22,7 +22,7 @@ final class InertiaFlash
     /**
      * Contains all the shared values
      *
-     * @var Collection<(int|string),mixed>
+     * @var Collection<int|string,mixed>
      */
     protected Collection $container;
 
@@ -52,7 +52,7 @@ final class InertiaFlash
         }
 
         if ($append) {
-            /** @var array<(string|int),mixed> $current */
+            /** @var array<string|int,mixed> $current */
             $current = $this->container->get($key, []);
             $value = array_merge_recursive(
                 $current,
@@ -171,7 +171,7 @@ final class InertiaFlash
     /**
      * Get the params being shared for the container
      *
-     * @return array<(string|int),mixed>
+     * @return array<string|int,mixed>
      */
     public function getShared(bool $flush = true): array
     {
