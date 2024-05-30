@@ -11,6 +11,8 @@ use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataViaChannel;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDispatcher;
 use Flavorly\InertiaFlash\Notification\Concerns\HasReadableNotifications;
 use Flavorly\InertiaFlash\Notification\Concerns\TransformsIntoLaravelNotification;
+use Flavorly\InertiaFlash\Notification\Data\NotificationActionData;
+use Flavorly\InertiaFlash\Notification\Data\NotificationIconData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationReadableData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum;
@@ -63,7 +65,7 @@ class FlashNotification extends Data
     /**
      * A optional timeout for the notification to be closed
      */
-    public ?int $timeout = null;
+    public null|int $timeout = null;
 
     /**
      * Stores the timestamps for the notification
@@ -83,6 +85,7 @@ class FlashNotification extends Data
         $this->id = 'n-'.Str::uuid();
         $this->readable = new NotificationReadableData();
         $this->notifiable = null;
+        $this->timestamps = new NotificationTimestampsData();
     }
 
     /**
@@ -149,24 +152,41 @@ class FlashNotification extends Data
 
     /**
      * Attempts to create a Notification from the Database Record
-     *
-     * @param DatabaseNotification $notification
-     * @return static
      */
-    public static function fromModel(DatabaseNotification $notification):static
+    public static function fromModel(DatabaseNotification $notification): static
     {
-        $data = static::from($notification->data ?? []);
-        if($notification->id !== null) {
+        $data = new static();
+        $data->message($notification->data->get('message') ?? '');
+        $data->title($notification->data->get('title') ?? null);
+        $data->to($notification->notifiable);
+        $data->shown = (bool)$notification->data->get('shown', true);
+        $data->allows_unsafe_html = (bool)$notification->data->get('allows_unsafe_html', false);
+        $data->timeout = $notification->data->get('timeout', null);
+        $data->contentBlocks = NotificationContentBlock::collect($notification->data->get('content_blocks', []), Collection::class);
+        $data->actions = NotificationActionData::collect($notification->data->get('actions', []), Collection::class);
+        $data->icon = NotificationIconData::from($notification->data->get('icon', []));
+        $data->level = NotificationLevelEnum::tryFrom($notification->data->get('level', NotificationLevelEnum::Info));
+        $data->type = NotificationTypeEnum::tryFrom($notification->data->get('type', NotificationTypeEnum::Flash));
+        $data->via = collect($notification->data->get('via', []));
+        $data->readable = NotificationReadableData::from($notification->data->get('readable', []));
+
+        // Timestamps
+        $data->timestamps->created_at = $notification->created_at;
+        $data->timestamps->read_at = $notification->read_at;
+        $data->timestamps->updated_at = $notification->updated_at;
+        $data->timestamps->deleted_at = $notification->deleted_at;
+
+        if ($notification->id !== null) {
             $data->id($notification->id);
         }
-        $data->to($notification->notifiable);
+
         return $data;
     }
 
     /**
      * Attempts to create a Notification from the Database Records
      *
-     * @param mixed|Collection<int,DatabaseNotification> $notifications
+     * @param  mixed|Collection<int,DatabaseNotification>  $notifications
      * @return Collection<int,static>
      */
     public static function fromModelCollection(mixed $notifications): Collection

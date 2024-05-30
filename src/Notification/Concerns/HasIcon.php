@@ -30,7 +30,7 @@ trait HasIcon
             content: $content,
             type: NotificationIconType::Raw,
             color: $color,
-            props: collect($props)
+            props: $props,
         );
 
         return $this;

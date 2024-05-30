@@ -4,7 +4,6 @@ namespace Flavorly\InertiaFlash\Notification\Data;
 
 use Flavorly\InertiaFlash\Notification\Enums\NotificationIconColor;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationIconType;
-use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
 class NotificationIconData extends Data
@@ -30,9 +29,9 @@ class NotificationIconData extends Data
         public NotificationIconColor $color = NotificationIconColor::Blue,
 
         /**
-         * @var Collection<string,mixed>|null
+         * @var array<string,mixed>|null
          */
-        public ?Collection $props = null,
+        public ?array $props = null,
     ) {
     }
 }

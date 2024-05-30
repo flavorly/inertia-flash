@@ -2,7 +2,9 @@
 
 namespace Flavorly\InertiaFlash\Notification\Data;
 
-class NotificationActionData
+use Spatie\LaravelData\Data;
+
+class NotificationActionData extends Data
 {
     public function __construct(
         /**

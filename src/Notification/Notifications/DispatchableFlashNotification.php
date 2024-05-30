@@ -36,6 +36,7 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
             ->notification
             ->via
             ->map(fn (string|NotificationViaEnum $via) => $via instanceof NotificationViaEnum ? $via->value : (string) $via)
+            ->reject(fn (string $via) => $via === 'inertia')
             ->toArray();
     }
 
