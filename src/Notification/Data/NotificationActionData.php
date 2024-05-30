@@ -2,12 +2,8 @@
 
 namespace Flavorly\InertiaFlash\Notification\Data;
 
-use Flavorly\InertiaFlash\Notification\Concerns\HasProps;
-
 class NotificationActionData
 {
-    use HasProps;
-
     public function __construct(
         /**
          * The label of the action ( Unique )
