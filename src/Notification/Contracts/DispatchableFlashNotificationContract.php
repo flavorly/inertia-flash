@@ -2,16 +2,16 @@
 
 namespace Flavorly\InertiaFlash\Notification\Contracts;
 
-use Flavorly\InertiaFlash\Notification\Notification;
+use Flavorly\InertiaFlash\Notification\FlashNotification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 
-interface NotificationDispatchable
+interface DispatchableFlashNotificationContract
 {
     /**
      * Create a new notification instance.
      */
-    public function __construct(Notification $notification);
+    public function __construct(FlashNotification $notification);
 
     /**
      * Get the notification's delivery channels.

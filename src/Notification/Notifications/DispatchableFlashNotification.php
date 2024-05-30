@@ -2,9 +2,9 @@
 
 namespace Flavorly\InertiaFlash\Notification\Notifications;
 
-use Flavorly\InertiaFlash\Notification\Contracts\NotificationDispatchable;
+use Flavorly\InertiaFlash\Notification\Contracts\DispatchableFlashNotificationContract;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum;
-use Flavorly\InertiaFlash\Notification\Notification;
+use Flavorly\InertiaFlash\Notification\FlashNotification;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as BaseNotification;
 
-class DispatchableNotification extends BaseNotification implements NotificationDispatchable, ShouldQueue
+class DispatchableFlashNotification extends BaseNotification implements DispatchableFlashNotificationContract, ShouldQueue
 {
     use InteractsWithSockets;
     use Queueable;
@@ -20,7 +20,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
     /**
      * {@inheritdoc}
      */
-    public function __construct(protected Notification $notification)
+    public function __construct(protected FlashNotification $notification)
     {
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 use Flavorly\InertiaFlash\InertiaFlash;
-use Flavorly\InertiaFlash\Notification\Notification;
+use Flavorly\InertiaFlash\Notification\FlashNotification;
 
 if (! function_exists('inertia_flash')) {
 
@@ -12,16 +12,16 @@ if (! function_exists('inertia_flash')) {
 }
 
 if (! function_exists('notification')) {
-    function notification(): Notification
+    function notification(): FlashNotification
     {
-        return new Notification();
+        return new FlashNotification();
     }
 }
 
 if (! function_exists('flash')) {
-    function flash(): Notification
+    function flash(): FlashNotification
     {
-        return (new Notification())
+        return (new FlashNotification())
             ->viaInertia()
             ->success();
     }

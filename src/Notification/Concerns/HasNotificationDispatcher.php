@@ -38,6 +38,7 @@ trait HasNotificationDispatcher
      */
     public function dispatch(): static
     {
+        $this->ensureIdIsUniqueBeforeDispatch();
         $this->dispatchViaInertia();
         $this->dispatchViaLaravel();
 
@@ -50,6 +51,7 @@ trait HasNotificationDispatcher
      */
     public function dispatchNow(): static
     {
+        $this->ensureIdIsUniqueBeforeDispatch();
         $this->dispatchViaInertia();
         $this->dispatchViaLaravel(true);
 
@@ -95,6 +97,21 @@ trait HasNotificationDispatcher
                 $this->viaInertiaNamespace,
                 $this->toArray()
             );
+        }
+    }
+
+    /**
+     * Ensure we are able to generate a unique ID
+     */
+    protected function ensureIdIsUniqueBeforeDispatch(): void
+    {
+        if (! $this->id) {
+            return;
+        }
+
+        // @phpstan-ignore-next-line
+        if (str_starts_with($this->id, 'n-')) {
+            $this->id = md5($this->message.$this->title.$this->id);
         }
     }
 

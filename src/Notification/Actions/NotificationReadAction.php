@@ -4,7 +4,7 @@ namespace Flavorly\InertiaFlash\Notification\Actions;
 
 use Exception;
 use Flavorly\InertiaFlash\Notification\Contracts\ReadableNotifications;
-use Flavorly\InertiaFlash\Notification\Notification;
+use Flavorly\InertiaFlash\Notification\FlashNotification;
 use Illuminate\Notifications\HasDatabaseNotifications;
 
 class NotificationReadAction implements ReadableNotifications
@@ -12,7 +12,7 @@ class NotificationReadAction implements ReadableNotifications
     /**
      * {@inheritdoc}
      */
-    public function read(object $notifiable, Notification $notification): bool
+    public function read(object $notifiable, FlashNotification $notification): bool
     {
         $uses = class_uses($notifiable);
         if (! in_array(HasDatabaseNotifications::class, $uses === false ? [] : $uses)) {
@@ -51,7 +51,7 @@ class NotificationReadAction implements ReadableNotifications
     /**
      * {@inheritdoc}
      */
-    public function getUrl(object $notifiable, Notification $notification): ?string
+    public function getUrl(object $notifiable, FlashNotification $notification): ?string
     {
         if (! $notification->readable) {
             return null;
@@ -72,7 +72,7 @@ class NotificationReadAction implements ReadableNotifications
     /**
      * {@inheritdoc}
      */
-    public function getMethod(object $notifiable, Notification $notification): string
+    public function getMethod(object $notifiable, FlashNotification $notification): string
     {
         return $notification->readable->method ?? 'GET';
     }

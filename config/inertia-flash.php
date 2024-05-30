@@ -62,7 +62,7 @@ return [
     'notifications' => [
 
         // The default notification to be used must implement the contract
-        'base_notification' => Flavorly\InertiaFlash\Notification\Notifications\DispatchableNotification::class,
+        'base_notification' => Flavorly\InertiaFlash\Notification\Notifications\DispatchableFlashNotification::class,
 
         // Class responsible for reading the notification
         'readable' => Flavorly\InertiaFlash\Notification\Actions\NotificationReadAction::class,

@@ -15,10 +15,13 @@ use Flavorly\InertiaFlash\Notification\Data\NotificationReadableData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\LaravelData\Data;
 
-class Notification extends Data
+class FlashNotification extends Data
 {
     use HasContentBlocks;
     use HasIcon;
@@ -78,7 +81,7 @@ class Notification extends Data
         $this->ensureDefaults();
         $this->actions = collect();
         $this->contentBlocks = collect();
-        $this->id = Str::uuid();
+        $this->id = 'n-'.Str::uuid();
         $this->readable = new NotificationReadableData();
         $this->notifiable = null;
     }
@@ -143,5 +146,33 @@ class Notification extends Data
         }
 
         return $encode;
+    }
+
+    /**
+     * Attempts to create a Notification from the Database Record
+     *
+     * @param DatabaseNotification $notification
+     * @return static
+     */
+    public static function fromModel(DatabaseNotification $notification):static
+    {
+        $data = static::from($notification->data ?? []);
+        if($notification->id !== null) {
+            $data->id($notification->id);
+        }
+        $data->to($notification->notifiable);
+        return $data;
+    }
+
+    /**
+     * Attempts to create a Notification from the Database Records
+     *
+     * @param mixed|Collection<int,DatabaseNotification> $notifications
+     * @return Collection<int,static>
+     */
+    public static function fromModelCollection(mixed $notifications): Collection
+    {
+        // @phpstan-ignore-next-line
+        return collect($notifications)->map(fn (DatabaseNotification $notification) => static::fromModel($notification));
     }
 }
