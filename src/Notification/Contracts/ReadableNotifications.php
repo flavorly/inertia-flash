@@ -13,29 +13,30 @@ interface ReadableNotifications
      * Returns a boolean indicating if the notification was read
      *
      *
-     * @var mixed|HasDatabaseNotifications $notifiable
-     * @var Notification $notification
+     * @param object $notifiable
+     * @param Notification $notification
      * @return bool
      */
-    public function read(mixed $notifiable, Notification $notification): bool;
+    public function read(object $notifiable, Notification $notification): bool;
 
 
     /**
      * Get the URL to mark the notification as read
      *
      *
-     * @var mixed|HasDatabaseNotifications $notifiable
-     * @var Notification $notification
+     * @param  object $notifiable
+     * @param  Notification  $notification
+     *
      * @return string|null
      */
-    public function getUrl(mixed $notifiable, Notification $notification): ?string;
+    public function getUrl(object $notifiable, Notification $notification): ?string;
 
     /**
      * Get the method to mark the notification as read
      *
-     * @var Notification $notification
-     * @var mixed|HasDatabaseNotifications $notifiable
+     * @param  object  $notifiable
+     * @param  Notification  $notification
      * @return string
      */
-    public function getMethod(mixed $notifiable, Notification $notification): string;
+    public function getMethod(object $notifiable, Notification $notification): string;
 }

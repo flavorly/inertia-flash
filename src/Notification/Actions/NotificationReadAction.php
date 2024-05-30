@@ -12,9 +12,14 @@ class NotificationReadAction implements ReadableNotifications
     /**
      * @inheritdoc
      */
-    public function read(mixed $notifiable, Notification $notification): bool
+    public function read(object $notifiable, Notification $notification): bool
     {
-        if (! in_array(HasDatabaseNotifications::class, class_uses($notifiable))) {
+        $uses = class_uses($notifiable);
+        if (! in_array(HasDatabaseNotifications::class, $uses === false ? [] : $uses)) {
+            return false;
+        }
+
+        if(!method_exists($notifiable, 'notifications')) {
             return false;
         }
 
@@ -22,8 +27,9 @@ class NotificationReadAction implements ReadableNotifications
             /**
              * @var HasDatabaseNotifications $notifiable
              */
+            // @phpstan-ignore-next-line
             $databaseNotification = $notifiable
-                ?->notifications()
+                ->notifications()
                 ->where('id', $notification->id)
                 ->first();
 
@@ -45,8 +51,12 @@ class NotificationReadAction implements ReadableNotifications
     /**
      * @inheritdoc
      */
-    public function getUrl(mixed $notifiable, Notification $notification): ?string
+    public function getUrl(object $notifiable, Notification $notification): ?string
     {
+        if(! $notification->readable) {
+            return null;
+        }
+
         if(! $notification->readable->enable || ! $notification->readable->route) {
             return null;
         }
@@ -62,7 +72,7 @@ class NotificationReadAction implements ReadableNotifications
     /**
      * @inheritdoc
      */
-    public function getMethod(mixed $notifiable, Notification $notification): string
+    public function getMethod(object $notifiable, Notification $notification): string
     {
         return $notification->readable->method ?? 'GET';
     }

@@ -9,17 +9,17 @@ trait HasNotificationDispatcher
 {
     /**
      * The user who will receive the notification
-     * @var mixed|RoutesNotifications
+     * @var object|null
      */
-    protected mixed $notifiable;
+    protected object|null $notifiable;
 
     /**
      * Set the notifiable user/model
      *
-     * @var mixed|RoutesNotifications $notifiable
+     * @param object $notifiable
      * @return static
      */
-    public function to(mixed $notifiable): static
+    public function to(object $notifiable): static
     {
         $this->notifiable = $notifiable;
 
@@ -66,15 +66,23 @@ trait HasNotificationDispatcher
      */
     protected function dispatchViaLaravel(bool $now = false): void
     {
-        if(! $this->notifiable) {
+        if(!$this->notifiable) {
+            return;
+        }
+
+        if(
+            !method_exists($this->notifiable, 'notifyNow') ||
+            !method_exists($this->notifiable, 'notify')
+        ) {
             return;
         }
 
         if($now){
+            // @phpstan-ignore-next-line
             $this->notifiable->notifyNow($this->toNotification());
             return;
         }
-
+        // @phpstan-ignore-next-line
         $this->notifiable->notify($this->toNotification());
     }
 

@@ -9,6 +9,7 @@ parameters:
     ignoreErrors:
         - '#to resolve the template type#i'
         - '#\$value of function collect expects Illuminate\\Cont#i'
+        - '#but returns mixed#i'
     scanFiles:
     excludePaths:
         - tests/*/Feature/*

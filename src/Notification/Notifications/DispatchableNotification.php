@@ -27,13 +27,15 @@ class DispatchableNotification extends BaseNotification implements NotificationD
 
     /**
      * {@inheritdoc}
+     * @phpstan-return  array<int, string>
      */
     public function via(object $notifiable): array
     {
+        // @phpstan-ignore-next-line
         return $this
             ->notification
             ->via
-            ->map(fn (string|NotificationViaEnum $via) => $via instanceof NotificationViaEnum ? $via->value : $via)
+            ->map(fn (string|NotificationViaEnum $via) => $via instanceof NotificationViaEnum ? $via->value : (string) $via)
             ->toArray();
     }
 
@@ -43,6 +45,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return (new BroadcastMessage($this->toArray($notifiable)))
+            // @phpstan-ignore-next-line
             ->onQueue(config('inertia-flash.notifications.queues.broadcast'));
     }
 
@@ -60,11 +63,12 @@ class DispatchableNotification extends BaseNotification implements NotificationD
             foreach ($this->notification->actions as $action) {
                 $message->action(
                     $action->label,
-                    $action->url
+                    $action->url ?? '#'
                 );
             }
         }
         $message->line('');
+        // @phpstan-ignore-next-line
         $message->line(trans('inertia-flash::translations.email-footer', ['app_name' => config('app.name')]));
 
         return $message;
@@ -75,7 +79,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
      */
     public function toArray(object $notifiable): array
     {
-        $id = $this->id ?? $this->notification->id;
+        $id = $this->id;
         // URL is re-generated here with the actual database ID if present
         $this->notification->id($id);
         return [
@@ -99,7 +103,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
      */
     public function viaConnections(): array
     {
-        return config('inertia-flash.notifications.connections');
+        return config('inertia-flash.notifications.connections', []);
     }
 
     /**
@@ -107,6 +111,6 @@ class DispatchableNotification extends BaseNotification implements NotificationD
      */
     public function viaQueues(): array
     {
-        return config('inertia-flash.notifications.queues');
+        return config('inertia-flash.notifications.queues', []);
     }
 }

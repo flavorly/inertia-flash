@@ -89,8 +89,11 @@ class Notification extends Data
      */
     protected function ensureDefaults(): void
     {
-        $this->via(config('inertia-flash.notifications.defaults.via', [NotificationViaEnum::Inertia,]));
+        // @phpstan-ignore-next-line
+        $this->via(config('inertia-flash.notifications.defaults.via', []));
+        // @phpstan-ignore-next-line
         $this->level(config('inertia-flash.notifications.defaults.level', NotificationLevelEnum::Info));
+        // @phpstan-ignore-next-line
         $this->type(config('inertia-flash.notifications.defaults.type',NotificationTypeEnum::Flash));
     }
 

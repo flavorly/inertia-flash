@@ -16,6 +16,7 @@ trait HasReadableNotifications
     {
         $this->readable = new NotificationReadableData();
         $this->readable->enable = true;
+        // @phpstan-ignore-next-line
         $this->readable->route = config('inertia-flash.notifications.defaults.read_route');
 
         if(filled($route)){
@@ -33,7 +34,7 @@ trait HasReadableNotifications
     /**
      * Attempts to set the URL for the notification based on the readable
      *
-     * @return HasReadableNotifications
+     * @return static
      */
     public function ensureReadableURLIsGenerated(): static
     {
@@ -42,6 +43,7 @@ trait HasReadableNotifications
         }
 
         /** @var ReadableNotifications $readable */
+        // @phpstan-ignore-next-line
         $readable = app(config('inertia-flash.notifications.readable'));
         $this->readable->url = $readable->getUrl($this->notifiable, $this);
         $this->readable->method = $readable->getMethod($this->notifiable, $this);

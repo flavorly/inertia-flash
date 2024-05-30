@@ -73,7 +73,7 @@ return [
             'type' =>  Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum::Flash,
             'level' => Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum::Info,
             'via' => [
-                Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Inertia,
+                //Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Inertia,
             ],
         ],
 

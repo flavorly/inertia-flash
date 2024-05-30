@@ -10,6 +10,10 @@ trait TransformsIntoLaravelNotification
     {
         /** @var string|null $notification */
         $notification = config('inertia-flash.notifications.base_notification');
+        if(null === $notification) {
+            return null;
+        }
+
         if(!class_exists($notification) || !is_subclass_of($notification, NotificationDispatchable::class)) {
             return null;
         }
