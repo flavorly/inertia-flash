@@ -10,7 +10,7 @@ trait HasNotificationDispatcher
     /**
      * The user who will receive the notification
      */
-    protected ?object $notifiable;
+    protected ?object $notifiable = null;
 
     /**
      * Set the notifiable user/model
@@ -61,6 +61,8 @@ trait HasNotificationDispatcher
      */
     protected function dispatchViaLaravel(bool $now = false): void
     {
+        $this->attemptToGetNotifiable();
+
         if (! $this->notifiable) {
             return;
         }

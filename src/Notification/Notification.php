@@ -80,6 +80,7 @@ class Notification extends Data
         $this->contentBlocks = collect();
         $this->id = Str::uuid();
         $this->readable = new NotificationReadableData();
+        $this->notifiable = null;
     }
 
     /**

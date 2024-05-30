@@ -12,10 +12,10 @@ class NotificationContentBlock extends Data
     use Concerns\HasPosition;
     use Concerns\HasProps;
 
-    protected string $id;
+    public string $id;
 
     public function __construct(
-        protected ContentBlockTypeEnum $type = ContentBlockTypeEnum::Tag,
+        public ContentBlockTypeEnum $type = ContentBlockTypeEnum::Tag,
     ) {
         $this->id = Str::uuid();
     }
