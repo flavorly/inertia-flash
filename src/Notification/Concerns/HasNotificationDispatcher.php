@@ -9,15 +9,11 @@ trait HasNotificationDispatcher
 {
     /**
      * The user who will receive the notification
-     * @var object|null
      */
-    protected object|null $notifiable;
+    protected ?object $notifiable;
 
     /**
      * Set the notifiable user/model
-     *
-     * @param object $notifiable
-     * @return static
      */
     public function to(object $notifiable): static
     {
@@ -32,6 +28,7 @@ trait HasNotificationDispatcher
     public function toUser(): static
     {
         $this->attemptToGetNotifiable();
+
         return $this;
     }
 
@@ -61,25 +58,24 @@ trait HasNotificationDispatcher
 
     /**
      * Attempt to dispatch via Laravel
-     * @param  bool  $now
-     * @return void
      */
     protected function dispatchViaLaravel(bool $now = false): void
     {
-        if(!$this->notifiable) {
+        if (! $this->notifiable) {
             return;
         }
 
-        if(
-            !method_exists($this->notifiable, 'notifyNow') ||
-            !method_exists($this->notifiable, 'notify')
+        if (
+            ! method_exists($this->notifiable, 'notifyNow') ||
+            ! method_exists($this->notifiable, 'notify')
         ) {
             return;
         }
 
-        if($now){
+        if ($now) {
             // @phpstan-ignore-next-line
             $this->notifiable->notifyNow($this->toNotification());
+
             return;
         }
         // @phpstan-ignore-next-line
@@ -102,8 +98,6 @@ trait HasNotificationDispatcher
 
     /**
      * Attempts to get notifiable user/model
-     *
-     * @return void
      */
     protected function attemptToGetNotifiable(): void
     {
@@ -113,14 +107,14 @@ trait HasNotificationDispatcher
         }
 
         // In console, jobs, etc
-        if(app()->runningInConsole()) {
+        if (app()->runningInConsole()) {
             return;
         }
 
         // Likely the user logged in that we want to notify
         $model = auth()->user();
         // Model exists and routes notifications
-        if($model && in_array(RoutesNotifications::class, class_uses($model))) {
+        if ($model && in_array(RoutesNotifications::class, class_uses($model))) {
             $this->notifiable = $model;
         }
     }

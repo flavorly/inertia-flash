@@ -43,6 +43,7 @@ class NotificationActionData
 
         /**
          * HTML Props
+         *
          * @var array<string,mixed>
          */
         public array $props = []

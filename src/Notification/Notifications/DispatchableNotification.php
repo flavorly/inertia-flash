@@ -3,7 +3,6 @@
 namespace Flavorly\InertiaFlash\Notification\Notifications;
 
 use Flavorly\InertiaFlash\Notification\Contracts\NotificationDispatchable;
-use Flavorly\InertiaFlash\Notification\Contracts\ReadableNotifications;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum;
 use Flavorly\InertiaFlash\Notification\Notification;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -27,6 +26,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
 
     /**
      * {@inheritdoc}
+     *
      * @phpstan-return  array<int, string>
      */
     public function via(object $notifiable): array
@@ -75,13 +75,14 @@ class DispatchableNotification extends BaseNotification implements NotificationD
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toArray(object $notifiable): array
     {
         $id = $this->id;
         // URL is re-generated here with the actual database ID if present
         $this->notification->id($id);
+
         return [
             ...$this->notification->toArray(),
             'id' => $id,
@@ -91,7 +92,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toDatabase(object $notifiable): array
     {
@@ -99,7 +100,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function viaConnections(): array
     {
@@ -107,7 +108,7 @@ class DispatchableNotification extends BaseNotification implements NotificationD
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function viaQueues(): array
     {

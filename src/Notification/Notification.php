@@ -15,12 +15,12 @@ use Flavorly\InertiaFlash\Notification\Data\NotificationReadableData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum;
-use Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum;
 use Illuminate\Support\Str;
 use Spatie\LaravelData\Data;
 
 class Notification extends Data
 {
+    use HasContentBlocks;
     use HasIcon;
     use HasNotificationActions;
     use HasNotificationDataLevel;
@@ -29,7 +29,6 @@ class Notification extends Data
     use HasNotificationDispatcher;
     use HasReadableNotifications;
     use TransformsIntoLaravelNotification;
-    use HasContentBlocks;
 
     /**
      * A unique ID, if its a persistent notification this should be the ID of the notification on the database
@@ -85,7 +84,6 @@ class Notification extends Data
 
     /**
      * Ensures the user defaults are set
-     * @return void
      */
     protected function ensureDefaults(): void
     {
@@ -94,12 +92,12 @@ class Notification extends Data
         // @phpstan-ignore-next-line
         $this->level(config('inertia-flash.notifications.defaults.level', NotificationLevelEnum::Info));
         // @phpstan-ignore-next-line
-        $this->type(config('inertia-flash.notifications.defaults.type',NotificationTypeEnum::Flash));
+        $this->type(config('inertia-flash.notifications.defaults.type', NotificationTypeEnum::Flash));
     }
 
     /**
      * The unique ID of the notification
-     * @param  int|string  $id
+     *
      * @return $this
      */
     public function id(int|string $id): static
@@ -108,6 +106,7 @@ class Notification extends Data
 
         // Generate the URL once a new ID is set
         $this->ensureReadableURLIsGenerated();
+
         return $this;
     }
 
@@ -118,6 +117,7 @@ class Notification extends Data
     {
         $this->message = $message;
         $this->title = $title ?? $this->title;
+
         return $this;
     }
 
@@ -133,14 +133,14 @@ class Notification extends Data
 
     /**
      * Returns the notification as a json
-     * @return string
      */
     public function __toString(): string
     {
         $encode = json_encode($this->toArray());
-        if($encode === false) {
+        if ($encode === false) {
             return '';
         }
+
         return $encode;
     }
 }

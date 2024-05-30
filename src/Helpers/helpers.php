@@ -11,9 +11,18 @@ if (! function_exists('inertia_flash')) {
     }
 }
 
+if (! function_exists('notification')) {
+    function notification(): Notification
+    {
+        return new Notification();
+    }
+}
+
 if (! function_exists('flash')) {
     function flash(): Notification
     {
-        return app(Notification::class);
+        return (new Notification())
+            ->viaInertia()
+            ->success();
     }
 }

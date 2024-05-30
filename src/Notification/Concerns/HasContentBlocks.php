@@ -31,6 +31,7 @@ trait HasContentBlocks
         }
         $this->contentBlocks = $this->contentBlocks ?? collect();
         $this->contentBlocks->push($content);
+
         return $this;
     }
 }

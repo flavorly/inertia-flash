@@ -10,7 +10,7 @@ use Illuminate\Notifications\HasDatabaseNotifications;
 class NotificationReadAction implements ReadableNotifications
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function read(object $notifiable, Notification $notification): bool
     {
@@ -19,7 +19,7 @@ class NotificationReadAction implements ReadableNotifications
             return false;
         }
 
-        if(!method_exists($notifiable, 'notifications')) {
+        if (! method_exists($notifiable, 'notifications')) {
             return false;
         }
 
@@ -34,7 +34,7 @@ class NotificationReadAction implements ReadableNotifications
                 ->first();
 
             // No method to read the notification or the notification does not exist
-            if (! $databaseNotification || !method_exists($databaseNotification, 'markAsRead')) {
+            if (! $databaseNotification || ! method_exists($databaseNotification, 'markAsRead')) {
                 return false;
             }
 
@@ -49,28 +49,28 @@ class NotificationReadAction implements ReadableNotifications
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUrl(object $notifiable, Notification $notification): ?string
     {
-        if(! $notification->readable) {
+        if (! $notification->readable) {
             return null;
         }
 
-        if(! $notification->readable->enable || ! $notification->readable->route) {
+        if (! $notification->readable->enable || ! $notification->readable->route) {
             return null;
         }
 
         return route(
             $notification->readable->route,
             [
-                'notification' => $notification->id
+                'notification' => $notification->id,
             ]
         );
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMethod(object $notifiable, Notification $notification): string
     {
