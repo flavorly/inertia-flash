@@ -41,6 +41,9 @@ trait HasReadableNotifications
             return $this;
         }
 
+        // @phpstan-ignore-next-line
+        $this->readable->route = config('inertia-flash.notifications.defaults.read_route');
+
         /** @var ReadableNotifications $readable */
         // @phpstan-ignore-next-line
         $readable = app(config('inertia-flash.notifications.readable'));

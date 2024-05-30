@@ -168,7 +168,7 @@ class FlashNotification extends Data
         $data->level = NotificationLevelEnum::tryFrom($notification->data->get('level', NotificationLevelEnum::Info));
         $data->type = NotificationTypeEnum::tryFrom($notification->data->get('type', NotificationTypeEnum::Flash));
         $data->via = collect($notification->data->get('via', []));
-        $data->readable = NotificationReadableData::from($notification->data->get('readable', []));
+        $data->readable();
 
         // Timestamps
         $data->timestamps->created_at = $notification->created_at;
