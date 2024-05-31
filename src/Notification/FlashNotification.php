@@ -173,7 +173,7 @@ class FlashNotification extends Data
     /**
      * Attempts to create a Notification from the Database Record
      */
-    public static function fromModel(DatabaseNotification $notification): static
+    public static function fromModel(DatabaseNotification $notification): self
     {
         $data = new self();
         $data->message($notification->data->get('message') ?? '');
@@ -185,8 +185,8 @@ class FlashNotification extends Data
         $data->contentBlocks = NotificationContentBlock::collect($notification->data->get('content_blocks', []), Collection::class);
         $data->actions = NotificationActionData::collect($notification->data->get('actions', []), Collection::class);
         $data->icon = NotificationIconData::from($notification->data->get('icon', []));
-        $data->level = NotificationLevelEnum::tryFrom($notification->data->get('level', NotificationLevelEnum::Info));
-        $data->type = NotificationTypeEnum::tryFrom($notification->data->get('type', NotificationTypeEnum::Flash));
+        $data->level = NotificationLevelEnum::tryFrom($notification->data->get('level', NotificationLevelEnum::Info)) ?? NotificationLevelEnum::Info;
+        $data->type = NotificationTypeEnum::tryFrom($notification->data->get('type', NotificationTypeEnum::Flash)) ?? NotificationTypeEnum::Flash;
         $data->via = collect($notification->data->get('via', []));
         $data->readable();
 
