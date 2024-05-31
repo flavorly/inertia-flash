@@ -231,7 +231,110 @@ There is a lot more to explore on the notifications advanced options, so im goin
 - When using Database Notifications a URL for `readable` is generated, you can override this by calling `readable($url)` on the notification.
 - You can also use `readable()` to generate a URL based on the current request.
 - There is a current issue that when sharing with Inertia & Database Notifications, the notification will be shared to the frontend, the ID of the inertia notification is a auto-generated one since the record is only created later. Use a Listener to update or just use Broadcast
-- 
+
+### 2.6) Notifications Frontend Implementation
+
+Here is an example of a component using Shadcn for Flash notifications, supporting emojis, icons and iconify for icons.
+
+```php
+notification()
+    ->title('Thanks for your order!'.time())
+    ->message('Thanks for your order! Your welcome on site! '.time())
+    ->icon('majesticons:add-column')
+    ->dispatch();
+```
+
+```tsx
+import { useContext } from 'react'
+import axios from 'axios'
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+import { each } from 'lodash-es'
+import { AlertFlash } from '@ui/alert-flash'
+import { NotificationsFlashContext } from './notifications-context'
+import type { AlertProps } from '@ui/design/alert'
+
+export function NotificationsFlash(){
+    const { state, api } = useContext(NotificationsFlashContext)
+
+    if(!state || !api) {
+        throw new Error('NotificationsFlash must be used within a provider')
+    }
+    
+    const { notifications } = usePage<{ notifications: Notification.FlashNotification[] }>().props
+    useEffect(
+        () => {
+            each(notifications, (notification: Notification.FlashNotification) => {
+                api.push(notification)
+            })
+        },
+        [notifications]
+    )
+
+    const onClose = (item: Notification.FlashNotification) => {
+        if(item.readable?.enable && item.readable.url) {
+            axios({
+                method: item.readable.method,
+                url: item.readable.url,
+            }).then(() => {
+                api.pull(item)
+            })
+            return
+        }
+        api.pull(item)
+    }
+
+    const convertLevelToVariant = (level: Notification.Enums.NotificationLevelEnum): AlertProps['variant'] => {
+        switch(level) {
+            case 'success':
+                return 'green'
+            case 'info':
+                return 'blue'
+            case 'warning':
+                return 'warning'
+            case 'error':
+                return 'destructive'
+            default:
+                return 'blue'
+        }
+    }
+
+    if(!state.items.length) {
+        return null
+    }
+
+    return (
+        <LayoutGroup>
+            <div className="grid grid-cols-1 gap-y-2">
+                <AnimatePresence>
+                    {state.items.map((item) => (
+                        <motion.div
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            key={item.id}
+                            transition={{ duration: 0.3, easing: 'ease-in-out' }}
+                        >
+                            { item.shown ? (
+                                <AlertFlash
+                                    closable
+                                    icon={item.icon?.content}
+                                    iconProps={item.icon?.props as any}
+                                    text={item.message}
+                                    title={item.title}
+                                    variant={convertLevelToVariant(item.level)}
+                                    onClose={() => { onClose(item) }}
+                                />
+                            ) : null }
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+            </div>
+        </LayoutGroup>
+    )
+}
+````
+
+
 # Why Inertia Flash?
 
 This package is intended to be used with the [InertiaJS](https://inertiajs.com/) framework. 

@@ -26,12 +26,23 @@ trait HasIcon
         array $props = []
     ): static {
 
-        $this->icon = $this->icon ?? new NotificationIconData(
+        ray('Icon', $this->icon);
+
+        if($this->icon !== null){
+            $this->icon->color = $color;
+            $this->icon->content = $content;
+            $this->icon->props = $props;
+            $this->icon->type = NotificationIconType::Raw;
+            return $this;
+        }
+
+        $this->icon = new NotificationIconData(
             content: $content,
             type: NotificationIconType::Raw,
             color: $color,
             props: $props,
         );
+        
 
         return $this;
     }

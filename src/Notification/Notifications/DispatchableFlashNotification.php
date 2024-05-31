@@ -90,8 +90,8 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
             ...$this->notification->toArray(),
             'id' => $id,
             'created_at' => now()->toDateTimeString(),
-            'mark_as_read' => $this->notification->via->contains(NotificationViaEnum::Inertia) ? true : false,
-            'read_at' => $this->notification->via->contains(NotificationViaEnum::Inertia) ? now() : null,
+            // This a quick workaround, so we can instantly mark this notification as read on a Observer
+            'mark_as_read' => $this->notification->via->contains(NotificationViaEnum::Inertia),
         ];
     }
 

@@ -155,7 +155,7 @@ class FlashNotification extends Data
      */
     public static function fromModel(DatabaseNotification $notification): static
     {
-        $data = new static();
+        $data = new self();
         $data->message($notification->data->get('message') ?? '');
         $data->title($notification->data->get('title') ?? null);
         $data->to($notification->notifiable);
