@@ -11,14 +11,14 @@ abstract class AbstractDriver
     /**
      * Get the data on the driver
      *
-     * @return Collection<(string|int),mixed>
+     * @return Collection<string|int,mixed>
      */
     abstract public function get(): Collection;
 
     /**
      * Put the data into the driver
      *
-     * @param  Collection<(string|int),mixed>  $container
+     * @param  Collection<string|int,mixed>  $container
      */
     abstract public function put(Collection $container): void;
 

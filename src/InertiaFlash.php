@@ -8,6 +8,7 @@ use Flavorly\InertiaFlash\Drivers\CacheDriver;
 use Flavorly\InertiaFlash\Drivers\SessionDriver;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use Inertia\Inertia;
@@ -22,7 +23,7 @@ final class InertiaFlash
     /**
      * Contains all the shared values
      *
-     * @var Collection<(int|string),mixed>
+     * @var Collection<int|string,mixed>
      */
     protected Collection $container;
 
@@ -52,7 +53,7 @@ final class InertiaFlash
         }
 
         if ($append) {
-            /** @var array<(string|int),mixed> $current */
+            /** @var array<string|int,mixed> $current */
             $current = $this->container->get($key, []);
             $value = array_merge_recursive(
                 $current,
@@ -171,7 +172,7 @@ final class InertiaFlash
     /**
      * Get the params being shared for the container
      *
-     * @return array<(string|int),mixed>
+     * @return array<string|int,mixed>
      */
     public function getShared(bool $flush = true): array
     {
@@ -186,7 +187,7 @@ final class InertiaFlash
             $this->container = collect();
         }
 
-        return $container->toArray();
+        return Arr::undot($container->toArray());
     }
 
     /**

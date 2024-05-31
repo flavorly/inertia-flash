@@ -49,4 +49,47 @@ return [
     'ignore_urls' => [
         'broadcasting/auth',
     ],
+
+    /*
+   |--------------------------------------------------------------------------
+   | Notifications Configuration
+   |--------------------------------------------------------------------------
+   |
+   | This contains the basic notifications configuration for the Flash Notifications
+   | System. Where we can set the queues, etc
+   |
+   */
+    'notifications' => [
+
+        // The default notification to be used must implement the contract
+        'base_notification' => Flavorly\InertiaFlash\Notification\Notifications\DispatchableFlashNotification::class,
+
+        // Class responsible for reading the notification
+        'readable' => Flavorly\InertiaFlash\Notification\Actions\NotificationReadAction::class,
+
+        // Defaults for the notification
+        'defaults' => [
+            'read_route' => 'notification.read',
+            'type' => Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum::Flash,
+            'level' => Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum::Info,
+            'via' => [
+                //Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Inertia,
+                //Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Database,
+            ],
+        ],
+
+        // Queues for the notifications channels
+        'queues' => [
+            'database' => 'default',
+            'mail' => 'default',
+            'broadcast' => 'default',
+        ],
+
+        // Connections for the notifications channels
+        'connections' => [
+            'broadcast' => 'redis',
+            'database' => 'sync',
+            'inertia' => 'sync',
+        ],
+    ],
 ];
