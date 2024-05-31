@@ -138,6 +138,26 @@ class FlashNotification extends Data
     }
 
     /**
+     * Allows the notification to have raw HTML
+     */
+    public function safe(): static
+    {
+        $this->allows_unsafe_html = false;
+
+        return $this;
+    }
+
+    /**
+     * Disallows the notification to have raw HTML
+     */
+    public function unsafe(): static
+    {
+        $this->allows_unsafe_html = true;
+
+        return $this;
+    }
+
+    /**
      * Returns the notification as a json
      */
     public function __toString(): string

@@ -12,4 +12,6 @@ enum NotificationIconColor: string
     case Pink = 'pink';
     case Gray = 'gray';
     case Muted = 'muted';
+    case Blank = 'blank';
+    case Transparent = 'transparent';
 }

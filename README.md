@@ -243,6 +243,7 @@ notification()
     ->icon('majesticons:add-column')
     ->dispatch();
 ```
+React Example: 
 
 ```tsx
 import { useContext } from 'react'

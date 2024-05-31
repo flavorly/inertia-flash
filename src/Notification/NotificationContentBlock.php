@@ -2,17 +2,24 @@
 
 namespace Flavorly\InertiaFlash\Notification;
 
+use Flavorly\InertiaFlash\Notification\Data\NotificationIconData;
 use Flavorly\InertiaFlash\Notification\Enums\ContentBlockTypeEnum;
+use Flavorly\InertiaFlash\Notification\Enums\NotificationIconColor;
 use Illuminate\Support\Str;
 use Spatie\LaravelData\Data;
 
 class NotificationContentBlock extends Data
 {
-    use Concerns\HasIcon;
     use Concerns\HasPosition;
     use Concerns\HasProps;
 
     public string $id;
+
+    /**
+     * Stores the icon configuration
+     * If we should get the icon from level, raw icon and props
+     */
+    public ?NotificationIconData $icon = null;
 
     public function __construct(
         public ContentBlockTypeEnum $type = ContentBlockTypeEnum::Tag,
@@ -23,6 +30,36 @@ class NotificationContentBlock extends Data
     public function id(string $id): static
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Raw icon ( usually for emojis or html )
+     * Keep in mind that this is not sanitized
+     *
+     * @param  array<string,mixed>  $props
+     */
+    public function icon(
+        string $content,
+        array $props = [],
+        ?NotificationIconColor $color = NotificationIconColor::Blue,
+    ): static {
+
+        $this->type = ContentBlockTypeEnum::Icon;
+
+        if($this->icon !== null){
+            $this->icon->color = $color;
+            $this->icon->content = $content;
+            $this->icon->props = $props;
+            return $this;
+        }
+
+        $this->icon = new NotificationIconData(
+            content: $content,
+            color: $color,
+            props: $props,
+        );
 
         return $this;
     }

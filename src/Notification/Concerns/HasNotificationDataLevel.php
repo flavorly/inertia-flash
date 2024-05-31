@@ -62,4 +62,15 @@ trait HasNotificationDataLevel
 
         return $this;
     }
+
+    /**
+     * Shortcut for message & level for Simple/Blank/Primary
+     */
+    public function simple(): static
+    {
+        $this->level = NotificationLevelEnum::Blank;
+
+        return $this;
+    }
+
 }

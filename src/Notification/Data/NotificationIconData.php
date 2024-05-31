@@ -3,7 +3,6 @@
 namespace Flavorly\InertiaFlash\Notification\Data;
 
 use Flavorly\InertiaFlash\Notification\Enums\NotificationIconColor;
-use Flavorly\InertiaFlash\Notification\Enums\NotificationIconType;
 use Spatie\LaravelData\Data;
 
 class NotificationIconData extends Data
@@ -15,18 +14,11 @@ class NotificationIconData extends Data
         public ?string $content = null,
 
         /**
-         * The type of the icon, if it should use icon from the level or any one on the content
-         *
-         * @var NotificationIconType
-         */
-        public NotificationIconType $type = NotificationIconType::FromLevel,
-
-        /**
          * The color of the icon
          *
          * @var NotificationIconColor
          */
-        public NotificationIconColor $color = NotificationIconColor::Blue,
+        public ?NotificationIconColor $color = null,
 
         /**
          * @var array<string,mixed>|null

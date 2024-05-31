@@ -5,7 +5,7 @@ namespace Flavorly\InertiaFlash\Notification\Enums;
 enum ContentBlockTypeEnum: string
 {
     case Tag = 'tag';
-    case Image = 'Image';
+    case Image = 'image';
     case IFrame = 'iframe';
     case Text = 'text';
     case Html = 'html';
