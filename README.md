@@ -82,7 +82,7 @@ return [
 ];
 ```
 
-## Usage
+## 1) Inertia Share
 
 You can use the Inertia Flash helper anywhere from your code and share your variables directly to InertiaJS.
 Keep in the mind that the values will only be kept on the current or next request lifecycle, they will be flushed once shared to Inertia
@@ -136,6 +136,102 @@ inertia_flash()->append('foo', 'bar');
 inertia_flash()->forUser($user)->append('foo', 'bar');
 ```
 
+## 2) Notifications
+
+This package also provide a nice way to build a agnostic notification system that can be shared to Inertia or Other Frameworks
+
+Here is a basic example of usage:
+
+```php
+  notification()
+    ->message('Thanks for your order! Your welcome on Site! ')
+    ->viaInertia()
+    ->dispatch();
+```
+
+### 2.1) Notifications Channels
+
+The Package provides 4 different ways to forward notifications, here is a quick breakdown:
+
+- Via Inertia - This will share the notification to frontend, resulting in a property being injected on the shared data, by default it goes into "notifications", this can be changed, it will contain an array of notifications there.
+- Via Database - This will use Laravel Notifications system to persist the notification on the database
+- Via Broadcast - this will use Laravel Echo to broadcast the notification to the frontend
+- Via Mail - this will use Laravel Mail to send the notification to the user
+
+Keep in mind that you can always override all this channels & the notification yourself by extending the original notification class or providing one on the configuration, Please do check the `config.php` for more information
+
+### 2.2) Notifications Content Blocks
+
+Usually notifications contain a title, message & icon, but there is some cases where you want more, we provide a simple abstraction for simple content blocks
+This is useful for Dialogs, where you want to show more information, keep in mind this is really simple, anything more complex should be taken care on the frontend
+
+Here is a quick example
+
+```php
+  notification()
+    ->dialog()
+    ->title('Thanks for your order!')
+    ->message('Thanks for your order! Your welcome on Site! ')
+    ->icon('🎉')
+    ->block(fn (NotificationContentBlock $block) => $block->icon('🎉'))
+    ->block(fn (NotificationContentBlock $block) => $block->title('Thanks for your order!'))
+    ->block(fn (NotificationContentBlock $block) => $block->text('Your welcome on Site!'))
+    ->block(fn (NotificationContentBlock $block) => $block->image('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXRmMHp4N2o1bjQ2ajg0bXEyMmt5OXJrdW8zcmxqbHJ1MTNjZmdxbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Cm9wKmKMUlRPvdoHgU/giphy-downsized-large.gif'))
+    ->viaInertia()
+    ->dispatch();
+```
+
+### 2.3) Notifications Icon
+
+By default the notification doesnt contain any icon, we send a "level" back, so you can decide on the frontend how you will handle the icon based on the level
+But you can also pass in more complex icons or raw icons ( say emojis ) for the notification icon.
+
+```php
+  notification()
+    ->message('Thanks for your order! Your welcome on Site! ')
+    ->icon('🎉')
+    ->dispatch();
+```
+
+### 2.4) Notifications Levels & Types
+
+By default a level `info` and type `flash` is set, you can change this by calling fluent methods.
+Different types of notifications can usefull across the app, while Flash notifications are more useful to show quick messages, dialogs can be also useful to show more detailed information.
+
+
+```php
+  notification()
+    ->message('Thanks for your order! Your welcome on Site!')
+    ->success()
+    ->dialog()
+    ->dispatch();
+
+  notification()
+    ->message('Thanks for your order! Your welcome on Site!')
+    ->error()
+    ->toast()
+    ->dispatch();
+
+  notification()
+    ->message('Thanks for your order! Your welcome on Site!')
+    ->warning()
+    ->flash()
+    ->dispatch();
+```
+
+
+### 2.5) Notifications Advanced
+
+There is a lot more to explore on the notifications advanced options, so im going to highlight some of them here:
+
+- Calling `dispatch()` will usually "queue" the notification sending depending on your driver, call `dispatchNow()` to send it immediately
+- Queues & Connections can be configured in the config file, same structure as Laravel.
+- By default no channels are enabled, you can chain `viaInertia()`, `viaDatabase()`, `viaBroadcast()`, `viaMail()` to enable them, or use the configuration to set a default channel.
+- By default, when using Broadcast or Database, we will try to resolve the notified to the current logged user, but you can always use `toUser()` or `to($notifiable)` to send it to a specific user/model.
+- When using Database Notifications a URL for `readable` is generated, you can override this by calling `readable($url)` on the notification.
+- You can also use `readable()` to generate a URL based on the current request.
+- There is a current issue that when sharing with Inertia & Database Notifications, the notification will be shared to the frontend, the ID of the inertia notification is a auto-generated one since the record is only created later. Use a Listener to update or just use Broadcast
+- 
 # Why Inertia Flash?
 
 This package is intended to be used with the [InertiaJS](https://inertiajs.com/) framework. 
