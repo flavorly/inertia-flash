@@ -8,6 +8,7 @@ use Flavorly\InertiaFlash\Drivers\CacheDriver;
 use Flavorly\InertiaFlash\Drivers\SessionDriver;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use Inertia\Inertia;
@@ -186,7 +187,7 @@ final class InertiaFlash
             $this->container = collect();
         }
 
-        return $container->toArray();
+        return Arr::undot($container->toArray());
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Flavorly\InertiaFlash\Notification\Concerns;
 
 use Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum;
-use Illuminate\Notifications\RoutesNotifications;
+use Illuminate\Notifications\Notifiable;
 
 trait HasNotificationDispatcher
 {
@@ -39,8 +39,8 @@ trait HasNotificationDispatcher
     public function dispatch(): static
     {
         $this->ensureIdIsUniqueBeforeDispatch();
-        $this->dispatchViaInertia();
         $this->dispatchViaLaravel();
+        $this->dispatchViaInertia();
 
         return $this;
     }
@@ -52,8 +52,8 @@ trait HasNotificationDispatcher
     public function dispatchNow(): static
     {
         $this->ensureIdIsUniqueBeforeDispatch();
-        $this->dispatchViaInertia();
         $this->dispatchViaLaravel(true);
+        $this->dispatchViaInertia();
 
         return $this;
     }
@@ -76,14 +76,17 @@ trait HasNotificationDispatcher
             return;
         }
 
+        $toNotification = $this->toNotification();
+
         if ($now) {
             // @phpstan-ignore-next-line
-            $this->notifiable->notifyNow($this->toNotification());
+            $this->notifiable->notifyNow($toNotification);
 
             return;
         }
+
         // @phpstan-ignore-next-line
-        $this->notifiable->notify($this->toNotification());
+        $this->notifiable->notify($toNotification);
     }
 
     /**
@@ -121,19 +124,15 @@ trait HasNotificationDispatcher
     protected function attemptToGetNotifiable(): void
     {
         // Already has one
-        if ($this->notifiable) {
-            return;
-        }
-
-        // In console, jobs, etc
-        if (app()->runningInConsole()) {
+        if (filled($this->notifiable)) {
             return;
         }
 
         // Likely the user logged in that we want to notify
         $model = auth()->user();
+
         // Model exists and routes notifications
-        if ($model && in_array(RoutesNotifications::class, class_uses($model))) {
+        if ($model && in_array(Notifiable::class, class_uses($model))) {
             $this->notifiable = $model;
         }
     }

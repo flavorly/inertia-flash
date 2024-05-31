@@ -18,7 +18,7 @@ trait HasNotificationDataViaChannel
     /**
      * The namespace where the notification will be dispatched when sharing with inertia
      */
-    public string $viaInertiaNamespace = 'auth.notifications';
+    public string $viaInertiaNamespace = 'notifications';
 
     /**
      * Routes the notification to the given channel, defaults to Broadcast & Database
