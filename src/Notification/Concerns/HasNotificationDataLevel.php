@@ -72,5 +72,4 @@ trait HasNotificationDataLevel
 
         return $this;
     }
-
 }

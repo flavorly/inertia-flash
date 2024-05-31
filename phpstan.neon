@@ -10,6 +10,7 @@ parameters:
         - '#to resolve the template type#i'
         - '#\$value of function collect expects Illuminate\\Cont#i'
         - '#but returns mixed#i'
+        - '#Access to an undefined property Illuminate\\Notifications\\DatabaseNotification#i'
     scanFiles:
     excludePaths:
         - tests/*/Feature/*

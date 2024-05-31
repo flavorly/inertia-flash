@@ -65,7 +65,7 @@ class FlashNotification extends Data
     /**
      * A optional timeout for the notification to be closed
      */
-    public null|int $timeout = null;
+    public ?int $timeout = null;
 
     /**
      * Stores the timestamps for the notification
@@ -179,8 +179,8 @@ class FlashNotification extends Data
         $data->message($notification->data->get('message') ?? '');
         $data->title($notification->data->get('title') ?? null);
         $data->to($notification->notifiable);
-        $data->shown = (bool)$notification->data->get('shown', true);
-        $data->allows_unsafe_html = (bool)$notification->data->get('allows_unsafe_html', false);
+        $data->shown = (bool) $notification->data->get('shown', true);
+        $data->allows_unsafe_html = (bool) $notification->data->get('allows_unsafe_html', false);
         $data->timeout = $notification->data->get('timeout', null);
         $data->contentBlocks = NotificationContentBlock::collect($notification->data->get('content_blocks', []), Collection::class);
         $data->actions = NotificationActionData::collect($notification->data->get('actions', []), Collection::class);

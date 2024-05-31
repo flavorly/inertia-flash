@@ -48,10 +48,11 @@ class NotificationContentBlock extends Data
 
         $this->type = ContentBlockTypeEnum::Icon;
 
-        if($this->icon !== null){
+        if ($this->icon !== null) {
             $this->icon->color = $color;
             $this->icon->content = $content;
             $this->icon->props = $props;
+
             return $this;
         }
 

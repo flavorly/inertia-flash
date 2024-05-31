@@ -82,7 +82,7 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
     {
         $id = $this->id;
         // URL is re-generated here with the actual database ID if present
-        if($this->id){
+        if ($this->id) {
             $this->notification->id($id);
         }
 
@@ -121,8 +121,6 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
 
     /**
      * Get the notification's database type.
-     *
-     * @return string
      */
     public function databaseType(object $notifiable): string
     {
