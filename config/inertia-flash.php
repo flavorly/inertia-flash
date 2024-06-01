@@ -69,6 +69,7 @@ return [
 
         // Defaults for the notification
         'defaults' => [
+            'namespace' => 'flashNotifications',
             'read_route' => 'notification.read',
             'type' => Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum::Flash,
             'level' => Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum::Info,

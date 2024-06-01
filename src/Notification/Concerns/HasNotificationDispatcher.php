@@ -97,7 +97,8 @@ trait HasNotificationDispatcher
         // Noop, we dont want to share via Inertia on console
         if ($this->via->contains(NotificationViaEnum::Inertia) || $this->via->contains('inertia')) {
             inertia_flash()->append(
-                $this->viaInertiaNamespace,
+                // @phpstan-ignore-next-line
+                $this->viaInertiaNamespace ?? config('inertia-flash.notifications.defaults.namespace', 'flashNotifications'),
                 $this->toArray()
             );
         }
