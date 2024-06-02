@@ -69,6 +69,7 @@ return [
 
         // Defaults for the notification
         'defaults' => [
+            'timeout' => 5000,
             'namespace' => 'flashNotifications',
             'read_route' => 'notification.read',
             'type' => Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum::Flash,

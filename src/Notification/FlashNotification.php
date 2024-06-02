@@ -158,6 +158,17 @@ class FlashNotification extends Data
     }
 
     /**
+     * Defines the timeout for the notification
+     */
+    public function timeout(?int $timeout = null): static
+    {
+        // @phpstan-ignore-next-line
+        $this->timeout = $timeout ?? intval(config('inertia-flash.notifications.defaults.timeout', 5000));
+
+        return $this;
+    }
+
+    /**
      * Returns the notification as a json
      */
     public function __toString(): string

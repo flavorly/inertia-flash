@@ -23,6 +23,7 @@ if (! function_exists('flash')) {
     {
         return (new FlashNotification())
             ->viaInertia()
+            ->timeout()
             ->success();
     }
 }
