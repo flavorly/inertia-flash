@@ -27,7 +27,7 @@ trait HasContentBlocks
     public function block(NotificationContentBlock|Closure $content): static
     {
         if ($content instanceof Closure) {
-            $content = $content(new NotificationContentBlock());
+            $content = $content(new NotificationContentBlock);
         }
         $this->contentBlocks = $this->contentBlocks ?? collect();
         $this->contentBlocks->push($content);

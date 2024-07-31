@@ -20,9 +20,7 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
     /**
      * {@inheritdoc}
      */
-    public function __construct(public FlashNotification $notification)
-    {
-    }
+    public function __construct(public FlashNotification $notification) {}
 
     /**
      * {@inheritdoc}

@@ -13,6 +13,5 @@ class NotificationTimestampsData extends Data
         public null|Carbon|CarbonImmutable $updated_at = null,
         public null|Carbon|CarbonImmutable $deleted_at = null,
         public null|Carbon|CarbonImmutable $read_at = null,
-    ) {
-    }
+    ) {}
 }

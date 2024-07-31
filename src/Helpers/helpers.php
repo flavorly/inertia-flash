@@ -14,14 +14,14 @@ if (! function_exists('inertia_flash')) {
 if (! function_exists('notification')) {
     function notification(): FlashNotification
     {
-        return new FlashNotification();
+        return new FlashNotification;
     }
 }
 
 if (! function_exists('flash')) {
     function flash(): FlashNotification
     {
-        return (new FlashNotification())
+        return (new FlashNotification)
             ->viaInertia()
             ->timeout()
             ->success();

@@ -14,7 +14,7 @@ trait HasReadableNotifications
 
     public function readable(?string $id = null, ?string $route = null): self
     {
-        $this->readable = new NotificationReadableData();
+        $this->readable = new NotificationReadableData;
         $this->readable->enable = true;
         // @phpstan-ignore-next-line
         $this->readable->route = config('inertia-flash.notifications.defaults.read_route');

@@ -49,6 +49,5 @@ class NotificationActionData extends Data
          * @var array<string,mixed>
          */
         public array $props = []
-    ) {
-    }
+    ) {}
 }

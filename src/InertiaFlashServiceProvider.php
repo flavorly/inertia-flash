@@ -28,10 +28,10 @@ class InertiaFlashServiceProvider extends PackageServiceProvider
     public function registeringPackage(): void
     {
         // Register Singleton
-        $this->app->singleton(InertiaFlash::class, fn ($app) => new InertiaFlash());
+        $this->app->singleton(InertiaFlash::class, fn ($app) => new InertiaFlash);
 
         // Extend the Inertia Default Response Factory
-        $this->app->extend(InertiaResponseFactory::class, fn () => new ResponseFactory());
+        $this->app->extend(InertiaResponseFactory::class, fn () => new ResponseFactory);
 
         // Append the Macro to forget specific Inertia Shared Keys
         Inertia::macro('forget', function ($keys) {

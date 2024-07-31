@@ -83,9 +83,9 @@ class FlashNotification extends Data
         $this->actions = collect();
         $this->contentBlocks = collect();
         $this->id = 'n-'.Str::uuid();
-        $this->readable = new NotificationReadableData();
+        $this->readable = new NotificationReadableData;
         $this->notifiable = null;
-        $this->timestamps = new NotificationTimestampsData();
+        $this->timestamps = new NotificationTimestampsData;
     }
 
     /**
@@ -186,7 +186,7 @@ class FlashNotification extends Data
      */
     public static function fromModel(DatabaseNotification $notification): self
     {
-        $data = new self();
+        $data = new self;
         $data->message($notification->data->get('message') ?? '');
         $data->title($notification->data->get('title') ?? null);
         $data->to($notification->notifiable);

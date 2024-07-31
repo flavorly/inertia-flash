@@ -24,6 +24,5 @@ class NotificationIconData extends Data
          * @var array<string,mixed>|null
          */
         public ?array $props = null,
-    ) {
-    }
+    ) {}
 }

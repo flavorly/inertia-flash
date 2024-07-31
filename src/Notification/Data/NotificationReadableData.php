@@ -26,6 +26,5 @@ class NotificationReadableData extends Data
          * Method to use to mark the notification as read
          */
         public string $method = 'post',
-    ) {
-    }
+    ) {}
 }
