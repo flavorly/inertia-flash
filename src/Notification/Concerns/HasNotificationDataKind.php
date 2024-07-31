@@ -2,21 +2,21 @@
 
 namespace Flavorly\InertiaFlash\Notification\Concerns;
 
-use Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum;
+use Flavorly\InertiaFlash\Notification\Enums\NotificationKindEnum;
 
-trait HasNotificationDataType
+trait HasNotificationDataKind
 {
     /**
      * How the frontend should handle the notification, default is Flash
      */
-    public NotificationTypeEnum $type = NotificationTypeEnum::Flash;
+    public NotificationKindEnum $kind = NotificationKindEnum::Flash;
 
     /**
      * Sets the notification type
      */
-    public function type(NotificationTypeEnum $kind): static
+    public function kind(NotificationKindEnum $kind): static
     {
-        $this->type = $kind;
+        $this->kind = $kind;
 
         return $this;
     }
@@ -26,7 +26,7 @@ trait HasNotificationDataType
      */
     public function flash(): static
     {
-        $this->type = NotificationTypeEnum::Flash;
+        $this->kind = NotificationKindEnum::Flash;
 
         return $this;
     }
@@ -36,7 +36,7 @@ trait HasNotificationDataType
      */
     public function dialog(): static
     {
-        $this->type = NotificationTypeEnum::Dialog;
+        $this->kind = NotificationKindEnum::Dialog;
 
         return $this;
     }
@@ -46,7 +46,7 @@ trait HasNotificationDataType
      */
     public function toast(): static
     {
-        $this->type = NotificationTypeEnum::Toast;
+        $this->kind = NotificationKindEnum::Toast;
 
         return $this;
     }

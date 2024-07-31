@@ -119,6 +119,11 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
         return config('inertia-flash.notifications.queues', []);
     }
 
+    public function broadcastAs(): string
+    {
+        return 'flash-notification';
+    }
+
     /**
      * Get the notification's database type.
      */

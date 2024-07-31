@@ -5,8 +5,8 @@ namespace Flavorly\InertiaFlash\Notification;
 use Flavorly\InertiaFlash\Notification\Concerns\HasContentBlocks;
 use Flavorly\InertiaFlash\Notification\Concerns\HasIcon;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationActions;
+use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataKind;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataLevel;
-use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataType;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDataViaChannel;
 use Flavorly\InertiaFlash\Notification\Concerns\HasNotificationDispatcher;
 use Flavorly\InertiaFlash\Notification\Concerns\HasReadableNotifications;
@@ -15,8 +15,8 @@ use Flavorly\InertiaFlash\Notification\Data\NotificationActionData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationIconData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationReadableData;
 use Flavorly\InertiaFlash\Notification\Data\NotificationTimestampsData;
+use Flavorly\InertiaFlash\Notification\Enums\NotificationKindEnum;
 use Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum;
-use Flavorly\InertiaFlash\Notification\Enums\NotificationTypeEnum;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -27,8 +27,8 @@ class FlashNotification extends Data
     use HasContentBlocks;
     use HasIcon;
     use HasNotificationActions;
+    use HasNotificationDataKind;
     use HasNotificationDataLevel;
-    use HasNotificationDataType;
     use HasNotificationDataViaChannel;
     use HasNotificationDispatcher;
     use HasReadableNotifications;
@@ -98,7 +98,7 @@ class FlashNotification extends Data
         // @phpstan-ignore-next-line
         $this->level(config('inertia-flash.notifications.defaults.level', NotificationLevelEnum::Info));
         // @phpstan-ignore-next-line
-        $this->type(config('inertia-flash.notifications.defaults.type', NotificationTypeEnum::Flash));
+        $this->kind(config('inertia-flash.notifications.defaults.kind', NotificationKindEnum::Flash));
     }
 
     /**
@@ -197,7 +197,7 @@ class FlashNotification extends Data
         $data->actions = NotificationActionData::collect($notification->data->get('actions', []), Collection::class);
         $data->icon = NotificationIconData::from($notification->data->get('icon', []));
         $data->level = NotificationLevelEnum::tryFrom($notification->data->get('level', NotificationLevelEnum::Info)) ?? NotificationLevelEnum::Info;
-        $data->type = NotificationTypeEnum::tryFrom($notification->data->get('type', NotificationTypeEnum::Flash)) ?? NotificationTypeEnum::Flash;
+        $data->kind = NotificationKindEnum::tryFrom($notification->data->get('kind', NotificationKindEnum::Flash)) ?? NotificationKindEnum::Flash;
         $data->via = collect($notification->data->get('via', []));
         $data->readable();
 
