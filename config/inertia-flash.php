@@ -75,8 +75,8 @@ return [
             'kind' => Flavorly\InertiaFlash\Notification\Enums\NotificationKindEnum::Flash,
             'level' => Flavorly\InertiaFlash\Notification\Enums\NotificationLevelEnum::Info,
             'via' => [
-                //Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Inertia,
-                //Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Database,
+                // Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Inertia,
+                // Flavorly\InertiaFlash\Notification\Enums\NotificationViaEnum::Database,
             ],
         ],
 
