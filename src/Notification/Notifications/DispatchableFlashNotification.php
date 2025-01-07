@@ -106,7 +106,10 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
      */
     public function viaConnections(): array
     {
-        return config('inertia-flash.notifications.connections', []);
+        // @phpstan-ignore-next-line
+        return collect(config('inertia-flash.notifications.connections', []))
+            ->reject(fn (string $connection) => $connection === NotificationViaEnum::Inertia->value || $connection === NotificationViaEnum::Broadcast->value)
+            ->toArray();
     }
 
     /**
@@ -114,7 +117,10 @@ class DispatchableFlashNotification extends BaseNotification implements Dispatch
      */
     public function viaQueues(): array
     {
-        return config('inertia-flash.notifications.queues', []);
+        // @phpstan-ignore-next-line
+        return collect(config('inertia-flash.notifications.queues', []))
+            ->reject(fn (string $queue) => $queue === NotificationViaEnum::Inertia->value || $queue === NotificationViaEnum::Broadcast->value)
+            ->toArray();
     }
 
     public function broadcastAs(): string
